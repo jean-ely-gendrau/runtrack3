@@ -9,7 +9,7 @@
 </head>
 
 <body>
-  <h1>Hello Js Job-05 !</h1>
+  <h1>Hello Js Job-06 !</h1>
 
   <!-- Add JS -->
   <script src="./script.js"></script>
