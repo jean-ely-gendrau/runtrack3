@@ -1,4 +1,4 @@
-function loadAlert() {
-  alert("Hello Javascript!");
+function loadConsole() {
+  console.log("Hello Javascript!");
 }
-loadAlert();
+loadConsole();
