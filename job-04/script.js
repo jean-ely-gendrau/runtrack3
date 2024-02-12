@@ -1,4 +1,1 @@
-function loadAlert() {
-  alert("Hello Javascript!");
-}
-loadAlert();
+function bisextile(annee) {}
