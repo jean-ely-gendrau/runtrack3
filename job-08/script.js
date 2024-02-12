@@ -1,7 +1,10 @@
 function sommeNombresPremiers(num1, num2) {
-  if (num1 <= 1 || num2 <= 1) return false; //RETURN
+  // Si le nombre est inférieur ou égale à 1, le nombre 1 n'étant pas un nombre 1er
+  if (num1 <= 1 || num2 <= 1) return false; //RETURN false
+
+  // Si le nombre est strictement égale à deux , 2 étant un nombre 1er
   if (num1 === 2 || num2 === 2)
-    //RETURN
+    //RETURN result
     return `Somme des nombres premier ${num1} et ${num2} : ${num1 + num2}`;
 
   /* 
@@ -13,17 +16,20 @@ function sommeNombresPremiers(num1, num2) {
     En utilisant l'opérateur modulo, nous pouvons obtenir le reste de la division sur chacun de ces nombres,
     si l'un d'entre eux est égal à zéro. Il est alors possible de diviser le nombre autrement que par lui-même ou 1..
     Alors ce n'est pas un nombre premier.
+
+    exmple pour 103 qui est un mobre premier,  il y aura 101 itération de la boucle 
+    -> nombre compris strictement inférieur au numberDiviser "2 < num(103)" | 103-2 = 101.
  */
-  for (let i = 2; i < num1; i++) {
-    if (num1 % i === 0) return false; //RETURN
+  for (let numberDiviser = 2; numberDiviser < num1; numberDiviser++) {
+    if (num1 % numberDiviser === 0) return false; //RETURN false
   }
 
-  for (let i = 2; i < num2; i++) {
-    if (num2 % i === 0) return false; //RETURN
+  for (let numberDiviser = 2; numberDiviser < num2; numberDiviser++) {
+    if (num2 % numberDiviser === 0) return false; //RETURN false
   }
 
   // Si tout c'est bien passé alors on retourne le résultat
-  return `Somme des nombres premier ${num1} et ${num2} : ${num1 + num2}`; //RETURN
+  return `Somme des nombres premier ${num1} et ${num2} : ${num1 + num2}`; //RETURN result
 }
 // Fonction sommeNombresPremiers(int, int);
 result = sommeNombresPremiers(5, 5);
