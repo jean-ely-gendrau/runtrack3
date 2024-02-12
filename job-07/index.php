@@ -12,7 +12,7 @@
   <h1>Hello Js Job-07 !</h1>
 
   <!-- Add JS -->
-  <script src="./script.js"></script>
+  <script src="./script.js" defer></script>
 </body>
 
 </html>
