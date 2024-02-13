@@ -4,7 +4,9 @@ if (button) {
   const printConsole = () => {
     const element = document.getElementById("citation");
     if (element) {
-      /* Insére code display none here */
+      element.classList.contains("displayNone")
+        ? element.classList.remove("displayNone")
+        : element.classList.add("displayNone");
     } else {
       const article = document.createElement("article");
       article.setAttribute("id", "citation");
