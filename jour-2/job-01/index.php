@@ -8,7 +8,16 @@
 </head>
 
 <body>
+  <article id="citation">
+    La vie a beaucoup plus d’imagination que nous
+  </article>
 
+  <button id="button">
+    Clique !
+  </button>
+
+  <!-- ADD JS -->
+  <script src="./script.js"></script>
 </body>
 
 </html>
