@@ -9,6 +9,7 @@
 </head>
 
 <body>
+  <div>dd</div>
   <footer class="footer"></footer>
   <!-- ADD JS -->
   <script src="./script.js"></script>
