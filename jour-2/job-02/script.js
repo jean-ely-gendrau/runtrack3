@@ -1,7 +1,7 @@
 const button = document.getElementById("button");
 
 if (button) {
-  const printConsole = () => {
+  const showHide = () => {
     const element = document.getElementById("citation");
     if (element) {
       element.classList.contains("displayNone")
@@ -16,5 +16,5 @@ if (button) {
     }
   };
 
-  button.addEventListener("click", printConsole);
+  button.addEventListener("click", showHide);
 }
