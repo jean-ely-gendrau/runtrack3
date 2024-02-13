@@ -9,7 +9,7 @@
 </head>
 
 <body>
-  <footer></footer>
+  <footer class="footer"></footer>
   <!-- ADD JS -->
   <script src="./script.js"></script>
 </body>
