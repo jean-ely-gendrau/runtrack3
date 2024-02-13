@@ -1,15 +1,11 @@
 function tri(numbers, order) {
-  // console.log(numbers, order);
-  numebersAsTri = numbers.map((number, index) => {
-    // console.log(number, index);
-    var tempNimbers =
-      index + 1 <= numbers.length - 1
-        ? numbers.slice(index + 1)
-        : numbers.slice(0, 1);
-    // console.log("tempNimbers", tempNimbers);
-    tempNimbers.forEach((numberNP1) => {
-      if (numberNP1 > number) {
-        return number;
+  console.log(numbers);
+
+  const numberAsc = (a, b) => a - b;
+  const mapReturn = numbers.map((number, index) => {
+    numbers.forEach((element) => {
+      if (element < number) {
+        return element;
       }
     });
   });

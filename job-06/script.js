@@ -1,5 +1,5 @@
 function fizzbuzz() {
-  for (let index = min; index < max; index) {
+  for (let index = 0; index < 50; index) {
     let result = index;
 
     if (index % 3 === 1 && index % 5 === 1) {

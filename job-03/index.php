@@ -9,7 +9,7 @@
 </head>
 
 <body>
-  <h1>Hello Js !</h1>
+  <h1>Hello Js Console !</h1>
 
   <!-- Add JS -->
   <script src="./script.js"></script>
