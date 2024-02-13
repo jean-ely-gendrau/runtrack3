@@ -14,6 +14,8 @@ const konamiHandler = (e) => {
   ];
   if (arrayBufferNonami.length === konamiSecret.length) {
     /* Ici le code si l'utilisateur trouve le secret Konami */
+  } else {
+    /* Sinon on va appliqué quelques actions */
   }
 };
 /* 
