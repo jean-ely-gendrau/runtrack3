@@ -8,9 +8,10 @@
 </head>
 
 <body>
+  <p id="compteur">0</p>
 
   <button id="button">
-    Clique !
+    compteur +
   </button>
   <!-- ADD JS -->
   <script src="./script.js"></script>
