@@ -18,10 +18,19 @@ const konamiHandler = (e) => {
     "B",
   ];
 
+  let lengthKonamiKey = arrayBufferNonami.length - 1; // Nombre valeur dans le tableau - 1
+
   if (arrayBufferNonami.length === konamiSecret.length) {
     /* Ici le code si l'utilisateur trouve le secret Konami */
   } else {
-    konamiSecret.push(e.key);
+    if (lengthKonamiKey === 0) {
+      arrayBufferNonami.push(e.key);
+    } else {
+      arrayBufferNonami.forEach((element, index) => {
+        if (element === konamiSecret[index]) {
+        }
+      });
+    }
   }
 };
 /* 
