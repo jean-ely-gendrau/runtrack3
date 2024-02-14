@@ -77,11 +77,11 @@ const konamiHandler = (e) => {
     let selectElement = document.querySelectorAll("h1,p");
 
     // Création de nouveau élément à ajouter à la page
-    let elementArticle = document.createElement("header");
-    let elementArticleMiddle = document.createElement("article");
-    let elementDiv = document.createElement("div");
-    let elementH1 = document.createElement("h1");
-    let elementP = document.createElement("p");
+    let elementArticle = document.createElement("header"); // header
+    let elementArticleMiddle = document.createElement("article"); // article
+    let elementDiv = document.createElement("div"); // div
+    let elementH1 = document.createElement("h1"); // h1
+    let elementP = document.createElement("p"); // p
 
     // Attribution de class et de text H1
     elementH1.setAttribute("class", "header-h1");
