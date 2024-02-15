@@ -14,7 +14,12 @@
   <button id="addButton">ajouter text</button>
 
   <div class="draggable-box ui-widget-content">
-    <p id="draggable">Déplace moi</p>
+    <img id="draggable-1" src="./images/arc1.png">
+    <img id="draggable-2" src="./images/arc2.png">
+    <img id="draggable-3" src="./images/arc3.png">
+    <img id="draggable-4" src="./images/arc4.png">
+    <img id="draggable-5" src="./images/arc5.png">
+    <img id="draggable-6" src="./images/arc6.png">
   </div>
 
   <div id="drop" class="ui-widget-content">

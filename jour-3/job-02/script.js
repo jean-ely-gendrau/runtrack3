@@ -7,7 +7,7 @@ $(document).ready(function () {
     $("body").append(paragraph); // Ajout du text dans le body
   });
 
-  $("#draggable").draggable({ revert: "invalid" });
+  $(".draggable-box").find("*").draggable({ revert: "invalid" });
 
   $("#drop").on("dropover", function (event, ui) {
     console.log(event, ui);
