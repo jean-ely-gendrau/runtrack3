@@ -1,3 +1,22 @@
+function randomImage() {
+  elementsImg = $(".draggable-box").find("*");
+
+  elementsImg.remove();
+
+  keyImage = Object.keys(elementsImg).filter(
+    (item) => item != "length" && item != "prevObject"
+  );
+  console.log(keyImage);
+  let elementRandom = [];
+  while (0 < keyImage.length) {
+    indexRandom = Math.floor(Math.random() * keyImage.length);
+    console.log(elementsImg[keyImage[indexRandom]]);
+    elementRandom = $(elementsImg[keyImage[indexRandom]]);
+    keyImage.splice(indexRandom, 1);
+    $(".draggable-box").append(elementRandom);
+  }
+}
+
 $(document).ready(function () {
   // Event Jquery on clicl
   $("#addButton").on("click", function () {

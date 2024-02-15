@@ -11,7 +11,7 @@
 <body>
   <h1>Jour 3 Jquery - Job-02</h1>
 
-  <button id="addButton">ajouter text</button>
+  <button id="addButton" onclick="randomImage()">Mélanger les images</button>
 
   <div class="draggable-box ui-widget-content">
     <img id="draggable-1" src="./images/arc1.png">
