@@ -1,0 +1,28 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.draggable-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 430px;
+  height: 430px;
+  border: 2px #000033 solid;
+  border-radius: 22px;
+}
+
+#drop {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 430px;
+  height: 430px;
+  border: 2px #000033 solid;
+  border-radius: 22px;
+}
+
+#drop:hover {
+  border: 2px #990000 solid;
+}
