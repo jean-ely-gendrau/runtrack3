@@ -19,27 +19,44 @@ function randomImage() {
     // On retire la valeur du tableau keyImage
     keyImage.splice(indexRandom, 1);
   });
+  // Initialisation de l'écouteur draggable
+  $(".draggable-box").find("*").draggable({ revert: "invalid" });
 }
 
 $(document).ready(function () {
-  // Event Jquery on clicl
+  // Event Jquery on click
   $("#addButton").on("click", function () {
-    randomImage();
+    randomImage(); // Ramdom Image
   });
 
+  // Initialisation de l'écouteur draggable
   $(".draggable-box").find("*").draggable({ revert: "invalid" });
 
+  // Initialisation de l'écouteur dropover
   $(".drop").on("dropover", function (event, ui) {
     console.log(event, ui);
   });
 
+  // Initialisation de l'écouteur dropdeactivate
   $("drop").on("dropdeactivate", function (event, ui) {
     console.log(event, ui);
   });
 
+  // Initialisation de l'écouteur droppable
   $(".drop").droppable({
     drop: function (event, ui) {
-      console.log(event, ui);
+      const { target, originalEvent } = event; // Object Event
+      const idElementEvent = originalEvent.target.id; // id de l'éléments image
+      let imageElement = $(`#${idElementEvent}`); // Element image
+
+      //DEBUG console.log(target.id);
+
+      $(`#${target.id}`).append(imageElement); // Ajoute l'élément dans le DOM
+      // Définition de style pour ajuster l'image en Hauteur et largeur après le déplacement.
+      $(`#${idElementEvent}`).attr(
+        "style",
+        "width: 65px; heigth: 175px; margin:auto;"
+      );
     },
   });
 });
