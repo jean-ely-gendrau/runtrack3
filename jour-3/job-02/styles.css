@@ -26,8 +26,7 @@ body {
   height: 175px;
 }
 
-#drop {
-  display: flex;
+.content-drop {
   justify-content: center;
   align-items: center;
   width: 400px;
@@ -38,11 +37,59 @@ body {
   margin: auto;
 }
 
-#drop:hover {
+.content-drop:hover {
   border: 2px #990000 solid;
 }
 
 #draggable-box img {
   width: 65px;
   height: 175px;
+}
+
+.wrapper {
+  display: grid;
+  min-height: 100%;
+  grid-template-columns: repeat(5, 1fr);
+  grid-gap: 10px;
+  grid-auto-rows: minmax(100%, 100%);
+  border-radius: 22px;
+}
+
+.one {
+  background-color: #880033;
+  grid-column: 1;
+  grid-row: 1;
+  height: 100%;
+  border-top-left-radius: 22px;
+  border-bottom-left-radius: 22px;
+}
+
+.two {
+  background-color: #000033;
+  grid-column: 2;
+  grid-row: 1;
+  height: 100%;
+}
+
+.three {
+  background-color: #006633;
+  grid-column: 3;
+  grid-row: 1;
+  height: 100%;
+}
+
+.four {
+  background-color: #000033;
+  grid-column: 4;
+  grid-row: 1;
+  height: 100%;
+}
+
+.five {
+  background-color: #000033;
+  grid-column: 5;
+  grid-row: 1;
+  height: 100%;
+  border-top-right-radius: 22px;
+  border-bottom-right-radius: 22px;
 }

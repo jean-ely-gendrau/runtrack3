@@ -1,34 +1,35 @@
 function randomImage() {
+  // Sélectionne les éléments dans le conteneurs
   elementsImg = $(".draggable-box").find("*");
+  elementsImg.remove(); // Suppréssion des élement du DOM
 
-  elementsImg.remove();
-
+  // array des clé des éléments précédament sélectionné - tout en filtrant les résultats et exclures certaine clé de celui-çi
   keyImage = Object.keys(elementsImg).filter(
     (item) => item != "length" && item != "prevObject"
   );
-  console.log(keyImage);
-  let elementRandom = [];
-  while (0 < keyImage.length) {
+
+  // On parcourt le tableau avec la function each Jquery
+  $(keyImage).each(function () {
+    // On définit un nombre aléatoire à partir de notre tableau keyImage
     indexRandom = Math.floor(Math.random() * keyImage.length);
-    console.log(elementsImg[keyImage[indexRandom]]);
-    elementRandom = $(elementsImg[keyImage[indexRandom]]);
+
+    // On ajoute l'élément dans le DOM
+    $(".draggable-box").append($(elementsImg[keyImage[indexRandom]]));
+
+    // On retire la valeur du tableau keyImage
     keyImage.splice(indexRandom, 1);
-    $(".draggable-box").append(elementRandom);
-  }
+  });
 }
 
 $(document).ready(function () {
   // Event Jquery on clicl
   $("#addButton").on("click", function () {
-    let paragraph = $("<p></p>").text(
-      "Les logiciels et les cathédrales, c'est un peu la même chose - d'abord on les construit, ensuite on prie."
-    ); // Création d'élément Jquery avec text
-    $("body").append(paragraph); // Ajout du text dans le body
+    randomImage();
   });
 
   $(".draggable-box").find("*").draggable({ revert: "invalid" });
 
-  $("#drop").on("dropover", function (event, ui) {
+  $(".drop").on("dropover", function (event, ui) {
     console.log(event, ui);
   });
 
@@ -36,9 +37,9 @@ $(document).ready(function () {
     console.log(event, ui);
   });
 
-  $("#drop").droppable({
-    drop: function () {
-      alert("dropped");
+  $(".drop").droppable({
+    drop: function (event, ui) {
+      console.log(event, ui);
     },
   });
 });
