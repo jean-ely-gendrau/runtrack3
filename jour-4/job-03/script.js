@@ -1,4 +1,8 @@
+const inputId = document.getElementById("id");
+const inputName = document.getElementById("name");
 const selectList = document.getElementById("type");
+const button = document.getElementById("filtre");
+
 const selectOptions = [
   "Grass",
   "Poison",
@@ -38,21 +42,21 @@ const resultJson = async () => {
   }
 };
 
-//  Function qui va créer le tableau des types de pockémon par rapport à la list en éxcluant ceux déjà ajouté
-let typeSelect = [];
-const reposneA = resultJson();
-reposneA.then((data) => {
-  const filterType = data.map((item, index) => {
-    item.type.map((element) => {
-      let isElement = false;
-      // console.log(element);
-      typeSelect.forEach((elementSelect) => {
-        if (elementSelect == element) {
-          isElement = true;
-        }
+function filterPokemon() {
+  const resultPokemon = resultJson();
+  resultPokemon.then((data) => {
+    if (inputId && inputName === undefined) {
+      console.log(data.filter((element) => selectList));
+    } else if (inputName) {
+      console.log(data.filter((element) => inputId === element.id));
+    } else if (selectList) {
+      const paragraphe = document.createElement("p");
+      data.filter((element) => {
+        const array = element.type.toString().includes(selectList.value)
+          ? element
+          : "";
       });
-      !isElement ? typeSelect.push(element) : "";
-    });
+    }
   });
-  console.log(typeSelect);
-});
+}
+button.addEventListener("click", () => filterPokemon());
