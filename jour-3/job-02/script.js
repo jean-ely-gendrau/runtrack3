@@ -1,3 +1,33 @@
+const combinaisonGagnante = [
+  "drop-one_arc1.png",
+  "drop-two_arc2.png",
+  "drop-three_arc3.png",
+  "drop-four_arc4.png",
+  "drop-five_arc5.png",
+  "drop-six_arc6.png",
+];
+
+let combinaisonActive = [];
+
+function checkingWinner() {
+  if (
+    combinaisonActive.length === 6 &&
+    combinaisonActive.toString() === combinaisonGagnante.toString()
+  ) {
+    let message = $("<p></p>")
+      .text("Vous avez gagné")
+      .addClass("result colorGreen");
+    $(".wrap").append(message);
+  } else if (
+    combinaisonActive.length === 6 &&
+    combinaisonActive.toString() !== combinaisonGagnante.toString()
+  ) {
+    let message = $("<p></p>")
+      .text("Vous avez perdu")
+      .addClass("result colorRed");
+    $(".wrap").append(message);
+  }
+}
 function randomImage() {
   // Sélectionne les éléments dans le conteneurs
   elementsImg = $(".draggable-box").find("*");
@@ -46,12 +76,20 @@ $(document).ready(function () {
   $(".drop").droppable({
     drop: function (event, ui) {
       const { target, originalEvent } = event; // Object Event
+      const { draggable } = ui;
       const idElementEvent = originalEvent.target.id; // id de l'éléments image
       let imageElement = $(`#${idElementEvent}`); // Element image
 
-      //DEBUG console.log(target.id);
+      const fileName = draggable[0]?.currentSrc?.split(/(\\|\/)/g).pop(); // Récupèrer le nom du fichier image
 
-      $(`#${target.id}`).append(imageElement); // Ajoute l'élément dans le DOM
+      combinaisonActive.push(`${target.id}_${fileName}`); // Ajout de l'id du conteneur de l'élément et du nomde l'image au tableau, format : idName_nameImage
+      // DEBUG_Combinaison console.log(combinaisonActive);
+
+      checkingWinner(); // Vérifie si le joueur gagne
+
+      $(`#${target.id}`)
+        .append(imageElement) // Ajoute l'élément dans le DOM
+        .removeClass("ui-widget-content ui-droppable");
       // Définition de style pour ajuster l'image en Hauteur et largeur après le déplacement.
       $(`#${idElementEvent}`).attr(
         "style",

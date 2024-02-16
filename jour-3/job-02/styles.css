@@ -59,6 +59,7 @@ article {
 
 .wrap {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   width: 400px;
@@ -74,6 +75,7 @@ article {
 }
 
 .content-drop {
+  display: flex;
   width: 100%;
   height: 100%;
   justify-content: center;
@@ -148,6 +150,22 @@ article {
   grid-column: 6;
   grid-row: 1;
   height: 100%;
+}
+
+.result {
+  width: 100%;
+  text-align: center;
+  font-size: x-large;
+  font-weight: 900;
+  margin-top: 2rem;
+}
+
+.colorRed {
+  color: red;
+}
+
+.colorGreen {
+  color: green;
 }
 
 /*
