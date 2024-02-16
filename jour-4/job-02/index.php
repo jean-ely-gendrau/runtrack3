@@ -21,7 +21,7 @@
     <br /><br />
     Indiquez simplement le nom de la clé pour voir le résultat
   </p>
-  <input type="text" placeholder="la clé de l'élément">
+  <input type="text" id="keyText" name="keytyext" placeholder="la clé de l'élément">
   <button id="button">Afficher</button>
   <!-- ADD SCRIPT -->
   <script src="./script.js"></script>
