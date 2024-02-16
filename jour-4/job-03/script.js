@@ -42,6 +42,49 @@ const resultJson = async () => {
   }
 };
 
+function accordionBS5(id, elementAtAccordion, title) {
+  const divElement = document.createElement("div");
+  const divItem = divElement;
+  const divCollaps = divElement;
+  const divBody = divElement;
+  const h2Element = document.createElement("h2");
+  const buttonElement = document.createElement("button");
+
+  // Définission des attribut à l'élément parent et enfant
+  divElement
+    .setAttribute("id", `accordion-${id}-${title.substring(0, 5)}`)
+    .setAttribute("class", "accordion");
+  divItem.setAttribute("class", "accordion-item");
+
+  // Définission des attribut à l'élément h2 et button - ajout de l'élément button dans le h2
+  h2Element.setAttribute("class", "accordion-header");
+  buttonElement
+    .setAttribute("class", "accordion-button")
+    .setAttribute("type", "button")
+    .setAttribute("data-bs-toggle", "collapse")
+    .setAttribute("data-bs-target", `#collaps${id}`)
+    .setAttribute("aria-expanded", "true")
+    .setAttribute("aria-controls", `collaps${id}`);
+  buttonElement.textContent = title;
+  h2Element.appendChild(buttonElement);
+
+  // Définission des attribut à l'élément collapse et accordion body
+  // Ajout de elementAtAccordion dans l'élément accordion body
+  // Ajout de l'élément précedant dans la collapse balise
+  divCollaps
+    .setAttribute("id", `collaps${id}`)
+    .setAttribute("class", "accordion-collapse collapse show")
+    .setAttribute("data-bs-parent", `accordion-${id}-${title.substring(0, 5)}`);
+  divBody.setAttribute("class", "accordion-body");
+  divBody.appendChild(elementAtAccordion);
+  divCollaps.appendChild(divBody);
+
+  // Ajout de tout les élément dans le accordion item
+  divItem.append(h2Element, divCollaps);
+  divElement.appendChild(divItem);
+
+  document.body.appendChild(divElement);
+}
 function filterPokemon() {
   const resultPokemon = resultJson();
   resultPokemon.then((data) => {
