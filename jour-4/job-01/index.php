@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 
 <head>
   <meta charset="UTF-8">
@@ -9,9 +9,9 @@
 
 <body>
   <h1>Jour 4 - Job 01 - Fecth</h1>
-  <button id="button"></button>
+  <button id="button">Afficher</button>
   <!-- ADD SCRIPT -->
-  <srcipt src="./script.js"></srcipt>
+  <script src="./script.js"></script>
 </body>
 
 </html>
