@@ -50,11 +50,62 @@ function filterPokemon() {
     } else if (inputName) {
       console.log(data.filter((element) => inputId === element.id));
     } else if (selectList) {
-      const paragraphe = document.createElement("p");
       data.filter((element) => {
-        const array = element.type.toString().includes(selectList.value)
+        const objectFilter = element.type.toString().includes(selectList.value)
           ? element
           : "";
+        if (objectFilter) {
+          console.log(element);
+          const articleElement = document.createElement("article"); // ARTICLE
+          const h3Element = document.createElement("h3"); // H3 ELEMENT
+          h3Element.textContent = objectFilter.name.french;
+
+          const paragraphe = document.createElement("p"); // PARAGRAPHE
+          paragraphe.textContent = `Nom du pokémon international : ${Object.entries(
+            objectFilter.name
+          )
+            .join(" - ")
+            .toString()}`;
+          const tableElement = document.createElement("table"); // TABLE
+          tableElement.setAttribute(
+            "class",
+            "table table-sm table-dark w-auto"
+          );
+          const tbodyElement = document.createElement("tbody"); // TBODY
+          tbodyElement.setAttribute(
+            "class",
+            "table-group-divider text-warning-emphasis"
+          );
+          const theadElement = document.createElement("thead"); // THEAD
+          const captionElement = document.createElement("caption"); // CAPTION
+          captionElement.setAttribute("class", "text-white");
+
+          const rowThead = document.createElement("tr"); // TR THEAD
+          const rowTbody = document.createElement("tr"); // TR TBODY
+
+          Object.entries(objectFilter.base).map(([key, val], index) => {
+            // DEBUG console.log(key, val);
+            const thElement = document.createElement("th");
+            const keyText = document.createTextNode(key);
+            thElement.appendChild(keyText);
+            rowThead.appendChild(thElement);
+
+            const tdElement = document.createElement("td");
+            const valText = document.createTextNode(val);
+            tdElement.appendChild(valText);
+            rowTbody.appendChild(tdElement);
+          });
+
+          const valText = document.createTextNode(
+            `id du pokémon :${objectFilter.id} - ${objectFilter.name.french}`
+          );
+          captionElement.appendChild(valText); // CAPTION
+          theadElement.appendChild(rowThead); // THEAD
+          tbodyElement.appendChild(rowTbody); // TBODY
+          tableElement.append(captionElement, theadElement, tbodyElement);
+          articleElement.append(h3Element, paragraphe, tableElement);
+          document.body.append(articleElement);
+        }
       });
     }
   });
