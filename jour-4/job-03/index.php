@@ -13,7 +13,9 @@
   <form id="formFilter">
     <input type="text" id="id" name="id" placeholder="id du pokémon">
     <input type="text" id="nom" name="nom" placeholder="nom du pokémon">
-    <select id="type" name="type"></select>
+    <select id="type" name="type">
+      <option value="">Choissir le type</option>
+    </select>
     <input type="button" id="filtre" name="filtre" value="filtrer">
   </form>
 
