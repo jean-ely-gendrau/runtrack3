@@ -22,7 +22,26 @@ function connectPdo()
   }
 }
 
-if (isset($data['action']) && $data['action'] === 'test') :
+function createTable()
+{
+  try {
+    $dbConnect = connectPdo();
+
+    $sqlCreateUsers = "CREATE TABLE utilisateurs (
+  id int NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  nom varchar(255) NOT NULL,
+  prenom varchar(255) NOT NULL,
+  email varchar(255) NOT NULL
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;";
+
+    $req = $dbConnect->prepare($sqlCreateUsers);
+    $req->execute(); // Execute la requête
+  } catch (Exception $error) {
+    die('Erreur : ' . $error->getMessage()); // Si une erreur est relevé
+  }
+}
+
+if (isset($data['action']) && $data['action'] === 'install_step2') :
   $prenoms = [
     "Alice",
     "Bob",
@@ -109,13 +128,16 @@ elseif (isset($data['action']) && $data['action'] === 'updateResult') :
 
 
 elseif (isset($data['action']) && $data['action'] === 'initProject') :
+  $req = "";
   try {
     $dbConnect = connectPdo();
-    $result = $dbConnect->query("SELECT 1 FROM utilisateurs LIMIT 1");
+    $sql = $dbConnect->prepare("SELECT * FROM utilisateurs");
+    $req = $sql->fetchAll(PDO::FETCH_ASSOC);
   } catch (Exception $e) {
     // We got an exception (table not found)
-    return FALSE;
+    createTable();
   }
 
-  echo json_encode($result);
+  echo json_encode($req);
+  exit();
 endif;
