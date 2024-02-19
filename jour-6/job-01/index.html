@@ -6,9 +6,10 @@
   <title>Jour 6 - Job-01 CSS Média queries JS</title>
   <link id="cssStyle" rel="stylesheet" href="./style1.css">
   <script>
+     // Quand l'écran est redimensionné
     onresize = (event) => {
     const cssElement = document.getElementById('cssStyle');
-    if (window.screen.width <= 1280 ) {
+    if (window.screen.width < 1280 ) {
       cssElement.href = "./style4.css";
     }else if (window.screen.width >= 1280 && window.screen.width <= 1680) {
       cssElement.href = "./style3.css";
