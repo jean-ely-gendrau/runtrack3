@@ -8,20 +8,51 @@
   <script>
     // Quand l'écran est redimensionné
     onresize = (event) => {
-    const cssElement = document.getElementById('cssStyle');
-    if (window.screen.width < 1280 ) {
-      document.body.style.backgroundColor = "#ffffff;";
-    }else if (window.screen.width >= 1280 && window.screen.width <= 1680) {
-      document.body.style.backgroundColor = "#275fa0";
-    }else if (window.screen.width >= 1680 && window.screen.width <= 1920) {
-      document.body.style.backgroundColor = "#ffca4b";
+    const cssElement = document.querySelectorAll('section');
+    if (window.screen.width <= 767 ) {
+      document.body.style.display = "flex";
+      document.body.style.justifyContent = "center";
+      document.body.style.alignItems = "center";
+      document.body.style.flexDirection = "column";
+      document.body.style.gap = "10px";
+      for (const element of cssElement) {
+        console.log(element);
+        element.style.width ='250px';
+        element.style.height ='125px';
+      }
+    }else if (window.screen.width >= 768 && window.screen.width <= 1599) {
+      document.body.style.display = "grid";
+      document.body.style.setProperty('grid-template-columns' ,'repeat(2, 1fr)');
+      document.body.style.justifyContent = "center";
+      document.body.style.alignItems = "center";
+      document.body.style.gap = "10px";
+      cssElement.forEach((element, index) => {
+
+        console.log(element);
+
+        element.style.width ='250px';
+        element.style.height ='125px';
+        element.style.display = 'flex';
+        element.style.margin = 'auto';
+        element.style.setProperty('grid-column', index % 2 === 1 ? 2 :1);
+      });
+    }else if (window.screen.width >= 1600 ) {
+      document.body.style.display = "flex";
+      document.body.style.justifyContent = "center";
+      document.body.style.alignItems = "center";
+      document.body.style.flexDirection = "row";
+      document.body.style.flexWrap = "wrap";
+      document.body.style.gap = "10px";
+      for (const element of cssElement) {
+        console.log(element);
+        element.style.width ='250px';
+        element.style.height ='125px';
+      }
     }
   };
   </script>
 </head>
 <body>
-  <h1>Jour 6 - Job-03 CSS Média queries JS</h1>
-
   <section class="section"></section>
   <section class="section"></section>
   <section class="section"></section>
