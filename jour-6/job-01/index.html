@@ -10,9 +10,9 @@
     const cssElement = document.getElementById('cssStyle');
     if (window.screen.width <= 1280 ) {
       cssElement.href = "./style4.css";
-    }else if (window.screen.width >= 1280 && window.screen.height <= 1680) {
+    }else if (window.screen.width >= 1280 && window.screen.width <= 1680) {
       cssElement.href = "./style3.css";
-    }else if (window.screen.width >= 1680 && window.screen.height <= 1920) {
+    }else if (window.screen.width >= 1680 && window.screen.width <= 1920) {
       cssElement.href = "./style2.css";
     }else{
       cssElement.href = "./style1.css";
