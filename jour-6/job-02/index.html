@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jour 6 - Job-02 CSS Média queries JS</title>
+  <link id="cssStyle" rel="stylesheet" href="./style.css">
+  <script>
+    onresize = (event) => {
+    const cssElement = document.getElementById('cssStyle');
+    if (window.screen.width < 1280 ) {
+      document.body.style.backgroundColor = "#ffffff;";
+    }else if (window.screen.width >= 1280 && window.screen.width <= 1680) {
+      document.body.style.backgroundColor = "#275fa0";
+    }else if (window.screen.width >= 1680 && window.screen.width <= 1920) {
+      document.body.style.backgroundColor = "#ffca4b";
+    }
+  };
+  </script>
+</head>
+<body>
+  <h1>Jour 6 - Job-01 CSS Média queries JS</h1>
+</body>
+</html>
