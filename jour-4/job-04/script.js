@@ -1,3 +1,7 @@
+const containerProject = document.getElementById("containerProject"); // Selecteur du container du project
+// Fonction Fect API post
+// bodyParam les paramètres à transmètre avec la requête POST
+// route : la point de déstination
 const postJs = async ({ bodyParam, route }) => {
   console.log(JSON.stringify(bodyParam));
   const req = await fetch(
@@ -12,15 +16,18 @@ const postJs = async ({ bodyParam, route }) => {
   );
 
   const response = await req.json();
+  // Si l'erreur error no bdd est retourner par la response , on redirige vers la page install.php
+  // La base de donnée n'as pas était créer, nous alons la créer avec un script PHP
   if (response === "error no bdd") {
     window.location.replace(
       `http://${window.location.hostname}/jour-4/job-04/install.php`
     );
   } else {
-    return response;
+    return response; // Aucune erreur retour de la response
   }
 };
 
+// Function createTable , créer la table HTML avec ses enfants ainsi que la configuration des attributs
 function createTable({ elements, textCaption }) {
   const tableElement = document.createElement("table"); // TABLE HTML
   tableElement.setAttribute(
@@ -62,18 +69,60 @@ function createTable({ elements, textCaption }) {
   return tableElement; // retourne la table
 }
 
+// Fonction addEventButton , créer les écouteurs d'événement pour les deux bouttons de la page
+function addEventButton(buttonUpdate, buttonAddUser) {
+  // resultUpdate
+  const resultUpdate = (e) => {
+    e.preventDefault();
+    initProject(); // Lance la function proncipal qui retournera les résultats rafraichit , sans recharger la page?
+  };
+  // addUser , ajoute des utilisateurs aléatoir celon le script pho appelé avec la function postJs
+  const addUser = (e) => {
+    e.preventDefault();
+    //API Fetch post
+    const response = postJs({
+      bodyParam: { action: "addUsers", number: 10 },
+      route: "user.php",
+    });
+    // Reponse de PHP en JSON
+    response.then((response) => console.log(response));
+  };
+
+  buttonUpdate.addEventListener("click", (e) => resultUpdate(e)); // Ecouteur événement click -> resultUpdate
+  buttonAddUser.addEventListener("click", (e) => addUser(e)); // Ecouteur événement click -> addUser
+}
+
+// Fonction initProject
+// Démarrage du project et mise à jour des résultats
 function initProject() {
   const fecth = postJs({
     bodyParam: { action: "initProject" },
     route: "user.php",
   });
+
+  const divGroup = document.createElement("div"); // HTML DIV
+  divGroup.setAttribute("class", "btn-group m-auto");
+  divGroup.setAttribute("role", "group");
+  divGroup.setAttribute("aria-label", "groupButton");
+
   const buttonUpdate = document.createElement("button"); // HTML BUTTON
-  buttonElement.setAttribute("id", "buttonUpdate");
+  buttonUpdate.setAttribute("id", "buttonUpdate");
+  buttonUpdate.setAttribute("class", "btn btn-warning text-black p-2");
+  buttonUpdate.textContent = "Rafraichir résultats";
 
   const buttonAddUser = document.createElement("button"); // HTML BUTTON
-  buttonElement.setAttribute("id", "buttonAddUser");
+  buttonAddUser.setAttribute("id", "buttonAddUser");
+  buttonAddUser.setAttribute("class", "btn btn-success text-white p-2");
+  buttonAddUser.textContent = "Ajout 10 utilisateurs aléatoir";
+
+  divGroup.append(buttonUpdate, buttonAddUser); // Ajout des bouttons de contrôle dasn la div
 
   const articleElement = document.createElement("article"); // HTML ARTICLE
+  articleElement.setAttribute("id", "containerProject");
+  articleElement.setAttribute(
+    "class",
+    "d-flex flex-column justify-content-center align-items-center"
+  );
   const h2Element = document.createElement("h2"); // HTML H2
 
   h2Element.textContent = "Afficher les utilisateurs de la base de données"; // Ajout du titre
@@ -86,9 +135,17 @@ function initProject() {
       textCaption: textCaption,
     }); // CREATE TABLE FUNCTION
 
-    articleElement.append(h2Element, tableUsers); // Ajout du titre et de la liste dans l'article
+    addEventButton(buttonUpdate, buttonAddUser);
+    articleElement.append(h2Element, tableUsers, divGroup); // Ajout du titre et de la liste dans l'article
 
-    document.body.append(articleElement); // Ajout de l'article dans le body
+    const containerProject = document.getElementById("containerProject"); // Selecteur du container du project
+    const title = document.getElementById("title"); // Selecteur du title du project
+
+    //Si containerProject existe alors on remplace l'élément par les nouveaux résultats, sinon on ajoute simplement au DOM
+    containerProject
+      ? containerProject.replaceWith(articleElement)
+      : document.body.insertBefore(articleElement, title.nextSibling);
   });
 }
+// initialise la fonction.
 initProject();

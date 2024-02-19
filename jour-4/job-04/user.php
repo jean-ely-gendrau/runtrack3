@@ -5,6 +5,8 @@ $content = trim(file_get_contents("php://input"));
 
 $data = json_decode($content, true); // transmorfe les données json en tableau associatif des données transmise par FETCH JS
 
+/*************************************** FONCTION PHP ***************************************/
+// Connection PDO
 function connectPdo()
 {
   //Connexion PDO BDD
@@ -26,6 +28,7 @@ function connectPdo()
   }
 }
 
+// Création de la table utilisateurs
 function createTable()
 {
   try {
@@ -46,6 +49,7 @@ function createTable()
   }
 }
 
+// Crétion d'utilisateur Aléatoir en base de données
 function createUser($number = 10)
 {
   // Prénom aléatoir pour l'exercise par ChatGPT
@@ -108,9 +112,11 @@ function createUser($number = 10)
 
   // Tant que on à pas attein le nombre d'utilisateur à créer
   for ($i = 0; $i < $number; $i++) :
+    // numberRandom is_array : Vérifie que c'est bien un array , car pour un élément array_rand ne retourne pas un tableau mais interger du nombre aléatoire.
+    $numberRandom = is_array($numberRandom) ? $numberRandom[$i] : $numberRandom;
     $numberPad = str_pad("{$number}{$i}", 3, 0, STR_PAD_LEFT); // Formatage du nombre exemple 1 -> 001
     // SQL INSERT SUITE
-    $sqlInsert .= "('{$prenoms[$numberRandom[$i]]}-{$numberPad}', '{$prenoms[$numberRandom[$i]]}-{$numberPad}', '{$prenoms[$numberRandom[$i]]}-{$numberPad}@gmail.com')";
+    $sqlInsert .= "('{$prenoms[$numberRandom]}-{$numberPad}', '{$prenoms[$numberRandom]}-{$numberPad}', '{$prenoms[$numberRandom]}-{$numberPad}@gmail.com')";
     // Si c'est la fin on insére ; dans la chaîne pour terminer la requête sinon on met la , pour continué la requête.
     $sqlInsert .= $number - 1 === $i ? ";" : ",";
   endfor;
@@ -128,21 +134,40 @@ function createUser($number = 10)
   }
 }
 
+/*************************************** CONDITION PHP ***************************************/
+
 // Si l'action de la requête JS est updateResult
 if (isset($data['action']) && $data['action'] === 'updateResult') :
-  // Sélection de tout les utilisateurs en BDD
-  $selectUsers = $dbConnect->prepare('SELECT * FROM utilisateur');
-  $selectUsers->execute(); // Execute la requête
+  try {
+    $dbConnect = connectPdo(); // Connection PDO
+    // Sélection de tout les utilisateurs en BDD
+    $selectUsers = $dbConnect->prepare('SELECT * FROM utilisateur');
+    $selectUsers->execute(); // Execute la requête
 
-  $users = $selectUsers->fetchAll(PDO::FETCH_ASSOC);
+    $users = $selectUsers->fetchAll(PDO::FETCH_ASSOC);
+    echo json_encode($users); // Retourne les résultats JSON à JS
+    exit(); // Arrête le script pour éviter les erreur lié au résultat JSON
 
-  echo json_encode($users); // Retourne les résultats JSON à JS
+  } catch (Exception $error) {
+
+    echo json_encode('Erreur : ' . $error->getMessage()); // Si une erreur est relevé
+    exit(); // Arrête le script pour éviter les erreur lié au résultat JSON
+  }
+
+// Si l'action de la requête JS est addUsers
+elseif (isset($data['action']) && $data['action'] === 'addUsers') :
+
+  $number = isset($data['numbers']) ? $data['number'] : 1;
+  createUser(intval($number));
+
+  echo json_encode("Action réalisée avec succée"); // Retourne les résultats JSON à JS
   exit(); // Arrête le script pour éviter les erreur lié au résultat JSON
 
 // Si l'action de la requête JS est initProject
 elseif (isset($data['action']) && $data['action'] === 'initProject') :
 
   try {
+
     $dbConnect = connectPdo(); // Connection PDO
     $sql = $dbConnect->prepare("SELECT * FROM utilisateurs"); // Sélections des utilisateurs en BDD
     $sql->execute(); // Execute
