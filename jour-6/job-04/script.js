@@ -1,12 +1,11 @@
 // Quand l'écran est redimensionné
 onresize = (event) => {
-  const headerSelector = document.querySelector("header");
-  const cssElement = document.querySelectorAll("header>a");
-  const elementHide = document.createElement("div");
-  const buttonBurger = document.createElement("button");
+  event.preventDefault();
+  const headerSelector = document.querySelector("header"); // Sélecteur du header
+  const cssElement = document.querySelectorAll("header>a"); // Sélection des liens dans le header
 
-  const domElementBurger = document.getElementById("buttonBurger");
-  const domElementHide = document.getElementById("hideElement");
+  const buttonBurger = document.createElement("button"); // Création du bputton buger
+  const domElementBurger = document.getElementById("buttonBurger"); // Sélecteur du boutton burger
 
   buttonBurger.setAttribute(
     "style",
@@ -14,27 +13,28 @@ onresize = (event) => {
   );
   buttonBurger.setAttribute("id", "buttonBurger");
 
-  elementHide.setAttribute("style", "display:none;");
-  elementHide.setAttribute("id", "hideElement");
+  const switchDisplayLink = (e) => {
+    if (cssElement.length > 0) {
+      for (let i = 0; i < cssElement.length; i++) {
+        cssElement[i].style.display == "inline-block"
+          ? cssElement[i].setAttribute("style", "display:none")
+          : cssElement[i].setAttribute("style", "display:inline-block");
+      }
+    }
+  };
 
   if (window.screen.width >= 768) {
-    console.log("domElementBurger");
     if (domElementBurger) {
-      for (let i = 0; i < cssElement.length; i++) {
-        cssElement[i].setAttribute("style", "display:inline-block");
-      }
-      // if(domElementHide === null) headerSelector.append(elementHide);
+      switchDisplayLink();
       domElementBurger.remove();
     }
   } else if (window.screen.width <= 767) {
-    if (cssElement.length > 0) {
-      for (let i = 0; i < cssElement.length; i++) {
-        cssElement[i].setAttribute("style", "display:none");
-      }
-      console.log(domElementHide);
-      // if(domElementHide === null) headerSelector.append(elementHide);
+    if (!domElementBurger) {
+      switchDisplayLink();
+      headerSelector.append(buttonBurger);
     }
-    //console.log(buttonBurger)
-    if (!domElementBurger) headerSelector.append(buttonBurger);
   }
+
+  if (domElementBurger)
+    domElementBurger.addEventListener("click", () => switchDisplayLink());
 };
