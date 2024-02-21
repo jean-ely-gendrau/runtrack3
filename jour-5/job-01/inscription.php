@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 
 <head>
   <meta charset="UTF-8">
@@ -10,7 +10,7 @@
 
 <body class="d-flex flex-column">
 
-  <article>
+  <article class="d-flex flex-column">
 
     <h1 class="mb-1">Inscription au module de connexion PHP-JS</h1>
 

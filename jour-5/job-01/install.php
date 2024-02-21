@@ -29,7 +29,7 @@ if (isset($_POST['install']) && $_POST['install'] === "install") :
 endif;
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 
 <head>
   <meta charset="UTF-8">

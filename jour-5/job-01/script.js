@@ -1,20 +1,36 @@
+// Fonction Fect API post
+// bodyParam les paramètres à transmètre avec la requête POST
+// route : la point de déstination
 async function postJs({ route, bodyParam, idForm }) {
   const form = document.getElementById(idForm);
+
   const formData = new formData(form);
+
   const res = await fetch(
-    `http://${window.location.hostname}/jour-5/${route}`,
+    `http://${window.location.hostname}/jour-5/job-01/${route}`,
     {
       method: "POST",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
       },
-      body: Array.form(([key, val], index) => {
-        return `${key}=${val}`;
-      }).join("&"),
+      body: Array.form(formData)
+        .map(([key, val], index) => {
+          return `${key}=${val}`;
+        })
+        .join("&"),
     }
   );
 
-  return await res.json();
+  const response = await res.json();
+  // Si l'erreur error no bdd est retourner par la response , on redirige vers la page install.php
+  // La base de donnée n'as pas était créer, nous alons la créer avec un script PHP
+  if (response === "error no bdd") {
+    window.location.replace(
+      `http://${window.location.hostname}/jour-5/job-04/install.php`
+    );
+  } else {
+    return response; // Aucune erreur retour de la response
+  }
 }
 // Fonction initProject
 async function initProject() {

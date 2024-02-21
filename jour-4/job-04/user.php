@@ -1,5 +1,5 @@
 <?php
-header('Content-Type: application/json; charset=utf-8'); // HEDER JSON
+header('Content-Type: application/json; charset=utf-8'); // HEADER JSON
 // file_get_contents("php://input") est un flux en lecture seule qui permet de lire les données brut du corp de la requête
 $content = trim(file_get_contents("php://input"));
 
