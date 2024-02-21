@@ -26,7 +26,7 @@ async function postJs({ route, bodyParam, idForm }) {
   // La base de donnée n'as pas était créer, nous alons la créer avec un script PHP
   if (response === "error no bdd") {
     window.location.replace(
-      `http://${window.location.hostname}/jour-5/job-04/install.php`
+      `http://${window.location.hostname}/jour-5/job-01/install.php`
     );
   } else {
     return response; // Aucune erreur retour de la response
