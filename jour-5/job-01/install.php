@@ -40,7 +40,7 @@ endif;
 
 <body class="d-flex flex-column">
   <article class="d-flex flex-column border-1 border-black p-4 gap-5">
-    <h1>Install Jour-4 Job-04 - Création BDD <?= $db; ?></h1>
+    <h1 id="title">Install Jour-4 Job-04 - Création BDD <?= $db; ?></h1>
 
     <p>La base de données <?= $db; ?> n'existe pas sur vôtre <?= $host; ?>, cliquez sur créer pour la générer. Nous sommes sur localhost et le nom d'utilisateur est root, la base ne comporte aucun mot de pass. Sur un serveur de production, vous devrez avoir un mot de pass sécuriser et utiliser un utilisateur dédié à la base pour un meilleur sécuriser.</p>
     <form method="post">

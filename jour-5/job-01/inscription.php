@@ -12,16 +12,16 @@
 
   <article class="d-flex flex-column">
 
-    <h1 class="mb-1">Inscription au module de connexion PHP-JS</h1>
+    <h1 id="title" class="mb-1">Inscription au module de connexion PHP-JS</h1>
 
     <form class="mb-1" id="form-inscription">
 
-      <input class="mb-1" type="text" id="nom" name="nom" />
-      <input class="mb-1" type="text" id="prenom" name="prenom" />
-      <input class="mb-1" type="email" id="email" name="email" />
-      <input class="mb-1" type="password" id="password" name="password" />
-      <input class="mb-1" type="password" id="passwordCompare" name="passwordCompare" />
-
+      <input class="mb-1 p-2 rounded" type="text" id="nom" name="nom" placeholder="Votre nom" />
+      <input class="mb-1  p-2 rounded" type="text" id="prenom" name="prenom" placeholder="Votre prénom" />
+      <input class="mb-1  p-2 rounded" type="email" id="email" name="email" placeholder="Votre email" />
+      <input class="mb-1  p-2 rounded" type="password" id="password" name="password" placeholder="Votre mot de pass" />
+      <input class="mb-1  p-2 rounded" type="password" id="passwordCompare" name="passwordCompare" placeholder="Confirmer le mot de pass" />
+      <button id="addUser" class="btn btn-success">S'enregistrer</button>
     </form>
 
   </article>

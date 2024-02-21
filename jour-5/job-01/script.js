@@ -4,34 +4,68 @@
 async function postJs({ route, bodyParam, idForm }) {
   const form = document.getElementById(idForm);
 
-  const formData = new formData(form);
-
-  const res = await fetch(
-    `http://${window.location.hostname}/jour-5/job-01/${route}`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      body: Array.form(formData)
+  if (form) {
+    const formData = new formData(form);
+    if (bodyParam) {
+      bodyParamFormat = Object.entries(bodyParam)
         .map(([key, val], index) => {
           return `${key}=${val}`;
         })
-        .join("&"),
+        .join("&");
     }
-  );
-
-  const response = await res.json();
-  // Si l'erreur error no bdd est retourner par la response , on redirige vers la page install.php
-  // La base de donnée n'as pas était créer, nous alons la créer avec un script PHP
-  if (response === "error no bdd") {
-    window.location.replace(
-      `http://${window.location.hostname}/jour-5/job-01/install.php`
+    const res = await fetch(
+      `http://${window.location.hostname}/jour-5/job-01/${route}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body:
+          Array.form(formData)
+            .map(([key, val], index) => {
+              return `${key}=${val}`;
+            })
+            .join("&") + bodyParamFormat,
+      }
     );
+
+    const response = await res.json();
+    // Si l'erreur error no bdd est retourner par la response , on redirige vers la page install.php
+    // La base de donnée n'as pas était créer, nous alons la créer avec un script PHP
+    if (response === "error no bdd") {
+      window.location.replace(
+        `http://${window.location.hostname}/jour-5/job-01/install.php`
+      );
+    } else {
+      return response; // Aucune erreur retour de la response
+    }
   } else {
-    return response; // Aucune erreur retour de la response
+    return false;
   }
 }
+
+// Fonction addEventButton , créer les écouteurs d'événement pour les deux bouttons de la page
+function addEventButton(buttonSignIn, buttonSignUp) {
+  // resultUpdate
+  const connectPage = (e) => {
+    e.preventDefault();
+    window.location.replace(
+      `http://${window.location.hostname}/jour-5/job-01/connexion.php`
+    );
+  };
+  // addUser , ajoute des utilisateurs aléatoir celon le script pho appelé avec la function postJs
+  const addUser = (e) => {
+    e.preventDefault();
+    //API Fetch post
+    window.location.replace(
+      `http://${window.location.hostname}/jour-5/job-01/inscription.php`
+    );
+  };
+
+  buttonSignIn.addEventListener("click", (e) => connectPage(e)); // Ecouteur événement click -> window.location.rerplace -> connexion
+  buttonSignUp.addEventListener("click", (e) => addUser(e)); // Ecouteur événement click -> window.location.rerplace -> inscription
+}
+
 // Fonction initProject
 async function initProject() {
   const res = await postJs({
@@ -45,17 +79,17 @@ async function initProject() {
   divGroup.setAttribute("role", "group");
   divGroup.setAttribute("aria-label", "groupButton");
 
-  const buttonUpdate = document.createElement("button"); // HTML BUTTON
-  buttonUpdate.setAttribute("id", "buttonUpdate");
-  buttonUpdate.setAttribute("class", "btn btn-warning text-black p-2");
-  buttonUpdate.textContent = "Inscription";
+  const buttonSignIn = document.createElement("button"); // HTML BUTTON
+  buttonSignIn.setAttribute("id", "buttonSignIn");
+  buttonSignIn.setAttribute("class", "btn btn-warning text-black p-2");
+  buttonSignIn.textContent = "Connection";
 
-  const buttonAddUser = document.createElement("button"); // HTML BUTTON
-  buttonAddUser.setAttribute("id", "buttonAddUser");
-  buttonAddUser.setAttribute("class", "btn btn-success text-white p-2");
-  buttonAddUser.textContent = "Connection";
+  const buttonSignUp = document.createElement("button"); // HTML BUTTON
+  buttonSignUp.setAttribute("id", "buttonSignUp");
+  buttonSignUp.setAttribute("class", "btn btn-success text-white p-2");
+  buttonSignUp.textContent = "Inscription";
 
-  divGroup.append(buttonUpdate, buttonAddUser); // Ajout des bouttons de contrôle dasn la div
+  divGroup.append(buttonSignIn, buttonSignUp); // Ajout des bouttons de contrôle à l'intérieur la div
 
   const articleElement = document.createElement("article"); // HTML ARTICLE
   articleElement.setAttribute("id", "containerProject");
@@ -67,23 +101,56 @@ async function initProject() {
 
   h2Element.textContent = "Module de connexion JS - PHP"; // Ajout du titre
 
-  // Reponse promise
-  fecth.then((response) => {
-    const messageUser = document.createElement("p");
-    // Message à lutilisateur
-    messageUser.textContent = `Bienvenu ${response.prenom}`;
+  articleElement.append(h2Element, divGroup); // Ajout du titre et de la liste dans l'article
 
-    addEventButton(buttonUpdate, buttonAddUser);
-    articleElement.append(h2Element, tableUsers, divGroup); // Ajout du titre et de la liste dans l'article
+  addEventButton(buttonSignIn, buttonSignUp);
+  const title = document.getElementById("title"); // Selecteur du title du project
 
-    const containerProject = document.getElementById("containerProject"); // Selecteur du container du project
-    const title = document.getElementById("title"); // Selecteur du title du project
+  if (res) {
+    // Reponse promise
+    res.then((response) => {
+      const messageUser = document.createElement("p");
+      // Message à lutilisateur
+      messageUser.textContent = `Bienvenu ${response.prenom}`;
 
-    //Si containerProject existe alors on remplace l'élément par les nouveaux résultats, sinon on ajoute simplement au DOM
-    containerProject
-      ? containerProject.replaceWith(articleElement)
-      : document.body.insertBefore(articleElement, title.nextSibling);
-  });
+      const containerProject = document.getElementById("containerProject"); // Selecteur du container du project
+
+      //Si containerProject existe alors on remplace l'élément par les nouveaux résultats, sinon on ajoute simplement au DOM
+      containerProject
+        ? containerProject.replaceWith(articleElement)
+        : document.body.insertBefore(articleElement, title.nextSibling);
+    });
+  } else {
+    document.body.insertBefore(articleElement, title.nextSibling);
+  }
 }
 // initialise la fonction.
 initProject();
+
+document.getElementById("form-connexion")?.addEventListener(
+  "submit",
+  (e) =>
+    async function (e) {
+      e.preventDefault();
+
+      const res = await postJs({
+        bodyParam: { action: "connectUser" },
+        route: "jsPhp.php",
+        idForm: "form-connexion",
+      });
+    }
+);
+
+document.getElementById("form-inscription")?.addEventListener(
+  "submit",
+  (e) =>
+    async function (e) {
+      e.preventDefault();
+
+      const res = await postJs({
+        bodyParam: { action: "addUser" },
+        route: "jsPhp.php",
+        idForm: "form-inscription",
+      });
+    }
+);
