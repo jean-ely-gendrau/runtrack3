@@ -153,37 +153,80 @@ document.getElementById("form-connexion")?.addEventListener(
 console.log(window.location.href);
 
 const loadForm = () => {
-  const elementForm = document.querySelector("form");
+  const elementForm = document.querySelector("form"); // Séléctionne la 1er balise form dans le DOM
 
+  // Si un formumaire est présent
   if (elementForm) {
     let formDatas = new FormData(elementForm);
-    console.log(elementForm);
 
-    for (let index = 0; index < elementForm.children.length; index++) {
+    // Tant qu'il y à des éléments enfant dans le formulaire - On retire 1 pour exclure le boutton
+    for (let index = 0; index < elementForm.children.length - 1; index++) {
+      // A chaque élément du formulaire on initialise un écouteur d'événement focusout
+      // focusout du champ de fomulaire déclenche une fonction fléché anonymes asynchrone
       elementForm.children[index].addEventListener(
         "focusout",
         async (event) => {
+          // On ce prémunit des événement par défaut du clavier.
           event.preventDefault();
-          let ctrlInput = {};
+          let ctrlInput = {}; // init ctrlInput
+
+          // Si l'événement name est === passwordCompare
           if (event.target.name === "passwordCompare") {
-            const inputPassword = document.getElementById("password");
+            const inputPassword = document.getElementById("password"); // Sélécteur de balise password
+            // Mofification de l'objet ctrlInput
+            // keyInputPwd: Nom de l'élément
+            // valInputPwd: Valeur de l'élément
             ctrlInput = {
               keyInputPwd: inputPassword.name,
               valInputPwd: inputPassword.value,
             };
           }
+
+          // Définition de l'objet bodyParamAssign
+          // Ce sont les paramètre à transmetre à la requête
+          // action: Valeur égale à la condition à évaluer en PHP $_POST['action']
+          // nameInput : Le nom de l'input à vérifier
+          // valInput  : Valeur de l'input à vérifier
           bodyParamAssign = {
             action: "regEx",
             nameInput: event.target.name,
             valInput: event.target.value,
           };
-          Object.assign(bodyParamAssign, ctrlInput);
-          console.log(bodyParamAssign);
+
+          Object.assign(bodyParamAssign, ctrlInput); // On rassemble les deux objets ensemble
+
+          // DEBUG console.log(bodyParamAssign);
+
+          // Reqêtes asyncrone vers php
           const res = await postJs({
             bodyParam: bodyParamAssign,
             route: "jsPhp.php",
           });
-          console.log(res);
+
+          // On définit un id message-warn-{Nom de la balise en cour de focus out}
+          let idWarn = `message-warn-${event.target.name}`;
+          const elementWarn = document.getElementById(idWarn); // Sélection de la balise
+
+          //DEBUG console.log(res);
+
+          // Si le résultat de la requête retourn false
+          if (res !== true) {
+            // On vérifie si la balise n'est pas dans le DOM
+            if (elementWarn === null) {
+              // On créer une balise paragraphe
+              let elementText = document.createElement("p");
+              elementText.setAttribute("id", idWarn); // On définit l'id
+              elementText.setAttribute("class", "text-danger"); // On définit une classe text-danger
+              elementText.textContent = res; // On définit le text du paragraphe avec le message renvoyé par PHP
+              event.target.after(elementText); // On ajoute l'élément après l'élément qui initialise l'événement
+            }
+          } else {
+            //Sinon tout c'est bien passé
+            // Si elementWarn existe dans le DOM
+            if (elementWarn) {
+              elementWarn.remove(); // On le retire.
+            }
+          }
         }
       );
     }

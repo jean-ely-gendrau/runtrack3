@@ -36,12 +36,18 @@ elseif (isset($_POST['action']) && $_POST['action'] === 'userConnect') :
 
 elseif (isset($_POST['action']) && $_POST['action'] === 'addUser') :
 
+// Vérification des inputs
+// nom doit contenir minimum 3 caracthère et 25 au maximum
+// prénom doit contenir minimum 3 caracthère et 25 au maximum
+// email est tester avec filter_var FILTER_VALIDATE_EMAIL
+// password doit contenir une minuscule et une majuscule minimum,un chiffre minimum, un caracthère spécial minimum de type % $ ; ! - _ , et il devras faire entre 6 et 25 carathères.
+// passwordCompare sera identique au précedent. 
 elseif (isset($_POST['action']) && $_POST['action'] === 'regEx') :
   if (isset($_POST['nameInput']) && isset($_POST['valInput'])) :
     $valuesInput = htmlspecialchars(trim($_POST['valInput']));
     switch ($_POST['nameInput']):
       case 'nom':
-        if (preg_match('/^(\w{3,20})$/', $valuesInput)) :
+        if (preg_match('/^(\w{3,25})$/', $valuesInput)) :
           echo json_encode(true); // Si le masque est bon true
           exit(); // Arrête le script pour éviter les erreur lié au résultat JSON
         endif;
@@ -51,7 +57,7 @@ elseif (isset($_POST['action']) && $_POST['action'] === 'regEx') :
         break;
 
       case  'prenom':
-        if (preg_match('/^(\w{3,20})$/', $valuesInput)) :
+        if (preg_match('/^(\w{3,25})$/', $valuesInput)) :
           echo json_encode(true); // Si le masque est bon true
           exit(); // Arrête le script pour éviter les erreur lié au résultat JSON
         endif;
@@ -71,7 +77,7 @@ elseif (isset($_POST['action']) && $_POST['action'] === 'regEx') :
         break;
       case 'password':
 
-        if (preg_match('/^(?(?=.*[A-Z])(?=.*[0-9])(?=.*[\%\$\,\;\!\-_])[a-zA-Z0-9\%\$\,\;\!\-_]{6,20})$/', $valuesInput)) :
+        if (preg_match('/^(?(?=.*[A-Z])(?=.*[0-9])(?=.*[\%\$\,\;\!\-_])[a-zA-Z0-9\%\$\,\;\!\-_]{6,25})$/', $valuesInput)) :
           echo json_encode(true); // Si le masque est bon true
           exit(); // Arrête le script pour éviter les erreur lié au résultat JSON
         endif;
@@ -81,7 +87,7 @@ elseif (isset($_POST['action']) && $_POST['action'] === 'regEx') :
         break;
       case 'passwordCompare':
 
-        if (isset($_POST['keyInputPwd']) && isset($_POST['valInputPwd']) && $_POST['valInputPwd'] === $valuesInput && preg_match('/^(?(?=.*[A-Z])(?=.*[0-9])(?=.*[\%\$\,\;\!\-_])[a-zA-Z0-9\%\$\,\;\!\-_]{6,20})$/', $valuesInput)) :
+        if (isset($_POST['keyInputPwd']) && isset($_POST['valInputPwd']) && $_POST['valInputPwd'] === $valuesInput && preg_match('/^(?(?=.*[A-Z])(?=.*[0-9])(?=.*[\%\$\,\;\!\-_])[a-zA-Z0-9\%\$\,\;\!\-_]{6,25})$/', $valuesInput)) :
           echo json_encode(true); // Si le masque est bon true
           exit(); // Arrête le script pour éviter les erreur lié au résultat JSON
         endif;

@@ -15,14 +15,22 @@
     <h1 id="title-signUp" class="mb-1">Inscription au module de connexion PHP-JS</h1>
 
     <form class="mb-1 d-flex flex-column m-auto" id="form-inscription" method="post">
-
+      <label for="nom">Votre nom</label>
       <input class="mb-1 p-2 rounded" type="text" id="nom" name="nom" placeholder="Votre nom" />
-      <input class="mb-1  p-2 rounded" type="text" id="prenom" name="prenom" placeholder="Votre prénom" />
-      <input class="mb-1  p-2 rounded" type="email" id="email" name="email" placeholder="Votre email" />
 
-      <input class="mb-1  p-2 rounded" type="password" id="password" name="password" placeholder="Votre mot de pass" />
-      <p class="mb-1 p-2">La longueur de votre mot de passe doit être d'au moins 6 caractères, comprenant au moins une lettre majuscule et un chiffre, ainsi qu'un caractère spécial (_ - ! $ ; % ,)</p>
-      <input class="mb-1  p-2 rounded" type="password" id="passwordCompare" name="passwordCompare" placeholder="Confirmer le mot de pass" />
+      <label for="prenom">Votre prénom</label>
+      <input class="mb-1 p-2 rounded" type="text" id="prenom" name="prenom" placeholder="Votre prénom" />
+
+      <label for="email">Votre email</label>
+      <input class="mb-1 p-2 rounded" type="email" id="email" name="email" placeholder="Votre email" />
+
+      <label for="password">Votre mot de pass</label>
+      <input class="mb-1 p-2 rounded" type="password" id="password" name="password" placeholder="Votre mot de pass" />
+      <p id="message-password" class="mb-1 p-2">La longueur de votre mot de passe doit être d'au moins 6 caractères, comprenant au moins une lettre majuscule et un chiffre, ainsi qu'un caractère spécial (_ - ! $ ; % ,)</p>
+
+      <label for="passwordCompare">Confirmer le mot de pass</label>
+      <input class="mb-1 p-2 rounded" type="password" id="passwordCompare" name="passwordCompare" placeholder="Confirmer le mot de pass" />
+
       <button id="addUser" class="btn btn-success">S'enregistrer</button>
     </form>
 
