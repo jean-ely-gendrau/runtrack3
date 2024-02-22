@@ -46,7 +46,7 @@ elseif (isset($_POST['action']) && $_POST['action'] === 'regEx') :
           exit(); // Arrête le script pour éviter les erreur lié au résultat JSON
         endif;
 
-        echo json_encode(false); // si la condition n'as pas était remplit alors false
+        echo json_encode("Votre nom n'est pas conforme"); // si la condition n'as pas était remplit alors on retourne un message d'érreur
         exit(); // Arrête le script pour éviter les erreur lié au résultat JSON
         break;
 
@@ -56,7 +56,7 @@ elseif (isset($_POST['action']) && $_POST['action'] === 'regEx') :
           exit(); // Arrête le script pour éviter les erreur lié au résultat JSON
         endif;
 
-        echo json_encode(false); // si la condition n'as pas était remplit alors false
+        echo json_encode("Votre prénom n'est pas conforme"); // si la condition n'as pas était remplit alors on retourne un message d'érreur
         exit(); // Arrête le script pour éviter les erreur lié au résultat JSON
         break;
       case 'email':
@@ -66,7 +66,7 @@ elseif (isset($_POST['action']) && $_POST['action'] === 'regEx') :
           exit(); // Arrête le script pour éviter les erreur lié au résultat JSON
         endif;
 
-        echo json_encode(false); // si la condition n'as pas était remplit alors false
+        echo json_encode("Votre adresse email n'as pas un format valid."); // si la condition n'as pas était remplit alors on retourne un message d'érreur
         exit(); // Arrête le script pour éviter les erreur lié au résultat JSON
         break;
       case 'password':
@@ -76,17 +76,17 @@ elseif (isset($_POST['action']) && $_POST['action'] === 'regEx') :
           exit(); // Arrête le script pour éviter les erreur lié au résultat JSON
         endif;
 
-        echo json_encode($valuesInput); // si la condition n'as pas était remplit alors false
+        echo json_encode("Votre dois être conforme au modèle exemple : A12xHs5a!25"); // si la condition n'as pas était remplit alors on retourne un message d'érreur
         exit(); // Arrête le script pour éviter les erreur lié au résultat JSON
         break;
       case 'passwordCompare':
 
-        if (preg_match('/^(?(?=.*[A-Z])(?=.*[0-9])(?=.*[\%\$\,\;\!\-_])[a-zA-Z0-9\%\$\,\;\!\-_]{6,20})$/', $valuesInput)) :
+        if (isset($_POST['keyInputPwd']) && isset($_POST['valInputPwd']) && $_POST['valInputPwd'] === $valuesInput && preg_match('/^(?(?=.*[A-Z])(?=.*[0-9])(?=.*[\%\$\,\;\!\-_])[a-zA-Z0-9\%\$\,\;\!\-_]{6,20})$/', $valuesInput)) :
           echo json_encode(true); // Si le masque est bon true
           exit(); // Arrête le script pour éviter les erreur lié au résultat JSON
         endif;
 
-        echo json_encode(false); // si la condition n'as pas était remplit alors false
+        echo json_encode("Les deux mots de passe ne sont pas identique"); // si la condition n'as pas était remplit alors on retourne un message d'érreur
         exit(); // Arrête le script pour éviter les erreur lié au résultat JSON
         break;
     endswitch;
