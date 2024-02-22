@@ -6,11 +6,11 @@ if (isset($_POST['install']) && $_POST['install'] === "install") :
   $root = "root";
 
   try {
-    echo $db;
     $dbConnect = new PDO('mysql:host=localhost;charset=utf8', $root);
     $dbConnect->exec("CREATE DATABASE `$db`;")
       or die(print_r($dbConnect->errorInfo(), true));
 
+    $dbConnect = new PDO("mysql:host=localhost;dbname={$db};charset=utf8", $root);
     $sqlCreateUsers = "CREATE TABLE utilisateurs (
         id int NOT NULL PRIMARY KEY AUTO_INCREMENT,
         nom varchar(255) NOT NULL,

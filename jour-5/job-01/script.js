@@ -4,8 +4,17 @@
 async function postJs({ route, bodyParam, idForm }) {
   const form = document.getElementById(idForm);
 
-  if (form) {
-    const formData = new formData(form);
+  if (form || bodyParam) {
+    const formData = form ? new FormData(form) : [];
+    let bodyFormFormat = "";
+    let bodyParamFormat = "";
+    if (form) {
+      bodyFormFormat = Array.form(formData)
+        .map(([key, val]) => {
+          return `${key}=${val}`;
+        })
+        .join("&");
+    }
     if (bodyParam) {
       bodyParamFormat = Object.entries(bodyParam)
         .map(([key, val], index) => {
@@ -20,12 +29,7 @@ async function postJs({ route, bodyParam, idForm }) {
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
         },
-        body:
-          Array.form(formData)
-            .map(([key, val], index) => {
-              return `${key}=${val}`;
-            })
-            .join("&") + bodyParamFormat,
+        body: bodyFormFormat + bodyParamFormat,
       }
     );
 
@@ -125,8 +129,14 @@ async function initProject() {
   }
 }
 // initialise la fonction.
-initProject();
-
+if (
+  (document.readyState === "complete" &&
+    window.location.href ===
+      `http://${window.location.hostname}/jour-5/job-01/index.php`) ||
+  window.location.href === `http://${window.location.hostname}/jour-5/job-01/`
+) {
+  initProject();
+}
 document.getElementById("form-connexion")?.addEventListener(
   "submit",
   (e) =>
@@ -140,17 +150,60 @@ document.getElementById("form-connexion")?.addEventListener(
       });
     }
 );
+console.log(window.location.href);
 
-document.getElementById("form-inscription")?.addEventListener(
-  "submit",
-  (e) =>
-    async function (e) {
-      e.preventDefault();
+const loadForm = () => {
+  const elementForm = document.querySelector("form");
 
-      const res = await postJs({
-        bodyParam: { action: "addUser" },
-        route: "jsPhp.php",
-        idForm: "form-inscription",
-      });
+  if (elementForm) {
+    let formDatas = new FormData(elementForm);
+    console.log(elementForm);
+
+    for (let index = 0; index < elementForm.children.length; index++) {
+      elementForm.children[index].addEventListener(
+        "focusout",
+        async (event) => {
+          event.preventDefault();
+          let ctrlInput = {};
+          if (event.target.name === "passwordCompare") {
+            const inputPassword = document.getElementById("password");
+            ctrlInput = {
+              keyInputPwd: inputPassword.name,
+              valInputPwd: inputPassword.value,
+            };
+          }
+          bodyParamAssign = {
+            action: "regEx",
+            nameInput: event.target.name,
+            valInput: event.target.value,
+          };
+          Object.assign(bodyParamAssign, ctrlInput);
+          console.log(bodyParamAssign);
+          const res = await postJs({
+            bodyParam: bodyParamAssign,
+            route: "jsPhp.php",
+          });
+          console.log(res);
+        }
+      );
     }
-);
+  }
+};
+if (document.getElementById("title-signUp")) {
+  //addEventListener("focusout", (event) => {});
+
+  document.getElementById("form-inscription")?.addEventListener(
+    "submit",
+    (e) =>
+      async function (e) {
+        e.preventDefault();
+
+        const res = await postJs({
+          bodyParam: { action: "addUser" },
+          route: "jsPhp.php",
+          idForm: "form-inscription",
+        });
+      }
+  );
+  loadForm();
+}
