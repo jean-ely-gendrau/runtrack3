@@ -35,6 +35,8 @@ if (isset($_POST['action']) && $_POST['action'] === 'initProject') :
 elseif (isset($_POST['action']) && $_POST['action'] === 'userConnect') :
 
 elseif (isset($_POST['action']) && $_POST['action'] === 'addUser') :
+  echo json_encode($_POST); // Si le masque est bon true
+  exit(); // Arrête le script pour éviter les erreur lié au résultat JSON
 
 // Vérification des inputs
 // nom doit contenir minimum 3 caracthère et 25 au maximum

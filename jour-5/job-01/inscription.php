@@ -31,7 +31,7 @@
       <label for="passwordCompare">Confirmer le mot de pass</label>
       <input class="mb-1 p-2 rounded" type="password" id="passwordCompare" name="passwordCompare" placeholder="Confirmer le mot de pass" />
 
-      <button id="addUser" class="btn btn-success">S'enregistrer</button>
+      <button id="addUser" type="submit" class="btn btn-success">S'enregistrer</button>
     </form>
 
   </article>

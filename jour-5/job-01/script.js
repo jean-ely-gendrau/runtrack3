@@ -1,3 +1,4 @@
+/******************************************** FUNCTIONS *****************************/
 // Fonction Fect API post
 // bodyParam les paramètres à transmètre avec la requête POST
 // route : la point de déstination
@@ -9,7 +10,8 @@ async function postJs({ route, bodyParam, idForm }) {
     let bodyFormFormat = "";
     let bodyParamFormat = "";
     if (form) {
-      bodyFormFormat = Array.form(formData)
+      console.log(form, formData);
+      bodyFormFormat = Array.from(formData)
         .map(([key, val]) => {
           return `${key}=${val}`;
         })
@@ -22,6 +24,7 @@ async function postJs({ route, bodyParam, idForm }) {
         })
         .join("&");
     }
+    console.log(bodyFormFormat + "&" + bodyParamFormat);
     const res = await fetch(
       `http://${window.location.hostname}/jour-5/job-01/${route}`,
       {
@@ -29,7 +32,7 @@ async function postJs({ route, bodyParam, idForm }) {
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
         },
-        body: bodyFormFormat + bodyParamFormat,
+        body: bodyFormFormat + "&" + bodyParamFormat,
       }
     );
 
@@ -70,6 +73,7 @@ function addEventButton(buttonSignIn, buttonSignUp) {
   buttonSignUp.addEventListener("click", (e) => addUser(e)); // Ecouteur événement click -> window.location.rerplace -> inscription
 }
 
+/******************************************************* PAGE HOME *******************************/
 // Fonction initProject
 async function initProject() {
   const res = await postJs({
@@ -128,7 +132,9 @@ async function initProject() {
     document.body.insertBefore(articleElement, title.nextSibling);
   }
 }
-// initialise la fonction.
+
+// initialise la fonction si le document à était chargée complétement
+// Si l'adresse de la page est index.php ou /
 if (
   (document.readyState === "complete" &&
     window.location.href ===
@@ -150,8 +156,8 @@ document.getElementById("form-connexion")?.addEventListener(
       });
     }
 );
-console.log(window.location.href);
 
+/***************************** INSCRIPTION **************************/
 const loadForm = () => {
   const elementForm = document.querySelector("form"); // Séléctionne la 1er balise form dans le DOM
 
@@ -232,21 +238,23 @@ const loadForm = () => {
     }
   }
 };
+
+async function submitForm(e) {
+  e.preventDefault();
+  console.log(e);
+  const res = await postJs({
+    bodyParam: { action: "addUser" },
+    route: "jsPhp.php",
+    idForm: "form-inscription",
+  });
+
+  console.log(res);
+}
+
 if (document.getElementById("title-signUp")) {
   //addEventListener("focusout", (event) => {});
-
-  document.getElementById("form-inscription")?.addEventListener(
-    "submit",
-    (e) =>
-      async function (e) {
-        e.preventDefault();
-
-        const res = await postJs({
-          bodyParam: { action: "addUser" },
-          route: "jsPhp.php",
-          idForm: "form-inscription",
-        });
-      }
-  );
+  console.log("ok");
+  const elementForm = document.getElementById("form-inscription");
+  elementForm.addEventListener("submit", submitForm);
   loadForm();
 }
