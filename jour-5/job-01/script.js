@@ -51,6 +51,54 @@ async function postJs({ route, bodyParam, idForm }) {
   }
 }
 
+// RegEx Javascript fortmulaire
+function validateInput(keyInput, valuesInput) {
+  switch (keyInput) {
+    case "nom":
+    case "prenom":
+      if (/^(\w{3,25})$/.test(valuesInput)) {
+        return true; // Si le masque est bon true
+      }
+      return (
+        "Votre " +
+        (keyInput === "nom" ? "nom" : "prénom") +
+        " n'est pas conforme"
+      ); // si la condition n'a pas été remplie alors on retourne un message d'erreur
+
+    case "email":
+      if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(valuesInput)) {
+        return true; // Si le masque est bon true
+      }
+      return "Votre adresse email n'a pas un format valide."; // si la condition n'a pas été remplie alors on retourne un message d'erreur
+
+    case "password":
+      if (
+        /^(?=.*[A-Z])(?=.*[0-9])(?=.*[\%\$\,\;\!\-_])[a-zA-Z0-9\%\$\,\;\!\-_]{6,25}$/.test(
+          valuesInput
+        )
+      ) {
+        return true; // Si le masque est bon true
+      }
+      return "Votre mot de passe doit être conforme au modèle exemple : A12xHs5a!25"; // si la condition n'a pas été remplie alors on retourne un message d'erreur
+
+    case "passwordCompare":
+      const valInputPwd = document.getElementById("password").value;
+      if (
+        valInputPwd &&
+        valInputPwd === valuesInput &&
+        /^(?=.*[A-Z])(?=.*[0-9])(?=.*[\%\$\,\;\!\-_])[a-zA-Z0-9\%\$\,\;\!\-_]{6,25}$/.test(
+          valuesInput
+        )
+      ) {
+        return true; // Si le masque est bon true
+      }
+      return "Les deux mots de passe ne sont pas identiques"; // si la condition n'a pas été remplie alors on retourne un message d'erreur
+
+    default:
+      return false; // Si aucune clé input n'a été trouvée.
+  }
+}
+
 // Fonction addEventButton , créer les écouteurs d'événement pour les deux bouttons de la page
 function addEventButton(buttonSignIn, buttonSignUp) {
   // resultUpdate
@@ -174,6 +222,9 @@ const loadForm = () => {
         async (event) => {
           // On ce prémunit des événement par défaut du clavier.
           event.preventDefault();
+
+          /* Pour faire la verification des Regex avec PHP décommenter cette ligne et celle qui la termine
+
           let ctrlInput = {}; // init ctrlInput
 
           // Si l'événement name est === passwordCompare
@@ -209,6 +260,10 @@ const loadForm = () => {
             route: "jsPhp.php",
           });
 
+          Fin de commentaire RegEx PHP */
+
+          // RegEx avec Javascript
+          const res = validateInput(event.target.name, event.target.value);
           // On définit un id message-warn-{Nom de la balise en cour de focus out}
           let idWarn = `message-warn-${event.target.name}`;
           const elementWarn = document.getElementById(idWarn); // Sélection de la balise
