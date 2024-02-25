@@ -154,6 +154,19 @@ function addAndCleanErrorHtmlMessage(key, objectMessage) {
   }
 }
 /******************************************************* PAGE HOME *******************************/
+async function diconnectUser(e) {
+  e.preventDefault();
+
+  const res = await postJs({
+    route: "JsPhp.php",
+    bodyParam: { action: "disconnectUser" },
+  });
+
+  if (res) {
+    window.location.reload();
+  }
+}
+
 // Fonction initProject
 async function initProject() {
   const res = await postJs({
@@ -161,23 +174,7 @@ async function initProject() {
     route: "jsPhp.php",
     idForm: "form-inscription",
   });
-  console.log(res);
-  const divGroup = document.createElement("div"); // HTML DIV
-  divGroup.setAttribute("class", "btn-group m-auto");
-  divGroup.setAttribute("role", "group");
-  divGroup.setAttribute("aria-label", "groupButton");
-
-  const buttonSignIn = document.createElement("button"); // HTML BUTTON
-  buttonSignIn.setAttribute("id", "buttonSignIn");
-  buttonSignIn.setAttribute("class", "btn btn-warning text-black p-2");
-  buttonSignIn.textContent = "Connection";
-
-  const buttonSignUp = document.createElement("button"); // HTML BUTTON
-  buttonSignUp.setAttribute("id", "buttonSignUp");
-  buttonSignUp.setAttribute("class", "btn btn-success text-white p-2");
-  buttonSignUp.textContent = "Inscription";
-
-  divGroup.append(buttonSignIn, buttonSignUp); // Ajout des bouttons de contrôle à l'intérieur la div
+  console.log("initProject  > res", res);
 
   const articleElement = document.createElement("article"); // HTML ARTICLE
   articleElement.setAttribute("id", "containerProject");
@@ -189,26 +186,56 @@ async function initProject() {
 
   h2Element.textContent = "Module de connexion JS - PHP"; // Ajout du titre
 
-  articleElement.append(h2Element, divGroup); // Ajout du titre et de la liste dans l'article
+  articleElement.append(h2Element); // Ajout du titre dans l'article
 
-  addEventButton(buttonSignIn, buttonSignUp);
   const title = document.getElementById("title"); // Selecteur du title du project
 
-  if (res) {
+  if (Object.keys(res).length > 0) {
     // Reponse promise
-    res.then((response) => {
-      const messageUser = document.createElement("p");
-      // Message à lutilisateur
-      messageUser.textContent = `Bienvenu ${response.prenom}`;
+    console.log(res);
 
-      const containerProject = document.getElementById("containerProject"); // Selecteur du container du project
+    const buttonSignOut = document.createElement("button"); // HTML BUTTON
+    buttonSignOut.setAttribute("id", "buttonSignOut");
+    buttonSignOut.setAttribute("class", "btn btn-danger text-black p-2");
+    buttonSignOut.textContent = "Déconnexion";
 
-      //Si containerProject existe alors on remplace l'élément par les nouveaux résultats, sinon on ajoute simplement au DOM
-      containerProject
-        ? containerProject.replaceWith(articleElement)
-        : document.body.insertBefore(articleElement, title.nextSibling);
-    });
+    const messageUser = document.createElement("p");
+    messageUser.setAttribute("class", "text-center fs-1 fs-bold");
+    // Message à lutilisateur
+
+    messageUser.textContent = `Bienvenu ${res.prenom}`;
+
+    articleElement.append(messageUser, buttonSignOut); // Ajout du titre et de la liste dans l'article
+
+    const containerProject = document.getElementById("containerProject"); // Selecteur du container du project
+
+    //Si containerProject existe alors on remplace l'élément par les nouveaux résultats, sinon on ajoute simplement au DOM
+    containerProject
+      ? containerProject.replaceWith(articleElement)
+      : document.body.insertBefore(articleElement, title.nextSibling);
+
+    buttonSignOut.addEventListener("click", diconnectUser);
   } else {
+    const divGroup = document.createElement("div"); // HTML DIV
+    divGroup.setAttribute("class", "btn-group m-auto");
+    divGroup.setAttribute("role", "group");
+    divGroup.setAttribute("aria-label", "groupButton");
+
+    const buttonSignIn = document.createElement("button"); // HTML BUTTON
+    buttonSignIn.setAttribute("id", "buttonSignIn");
+    buttonSignIn.setAttribute("class", "btn btn-warning text-black p-2");
+    buttonSignIn.textContent = "Connexion";
+
+    const buttonSignUp = document.createElement("button"); // HTML BUTTON
+    buttonSignUp.setAttribute("id", "buttonSignUp");
+    buttonSignUp.setAttribute("class", "btn btn-success text-white p-2");
+    buttonSignUp.textContent = "Inscription";
+
+    divGroup.append(buttonSignIn, buttonSignUp); // Ajout des bouttons de contrôle à l'intérieur la div
+
+    articleElement.append(divGroup); // Ajout du titre et de la liste dans l'article
+
+    addEventButton(buttonSignIn, buttonSignUp);
     document.body.insertBefore(articleElement, title.nextSibling);
   }
 }
@@ -337,7 +364,9 @@ async function submitConnectForm(e) {
 
   // Si la reponse est true
   if (res) {
-    window.location.replace(`https://${window.location.href}/jour-5/job-01/`);
+    window.location.replace(
+      `https://${window.location.hostname}/jour-5/job-01/`
+    );
   } else {
     // Sinon on gére l'erreur de connection ici
     console.error("Ooops login inncorrect");

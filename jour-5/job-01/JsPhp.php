@@ -11,6 +11,20 @@ function isSessionUsers(string $action = null, array $params = [])
   }
 
   switch ($action) {
+    case 'GET_PARAMS':
+      $responseParams = [];
+
+      foreach ($params as $key => $val) :
+
+        if (isset($_SESSION[$val])) :
+          $responseParams[$val] = $_SESSION[$val];
+        endif;
+
+      endforeach;
+
+      return $responseParams;
+      break;
+
     case 'SET_PARAMS':
       foreach ($params as $key => $val) :
         $_SESSION[$key] = $val;
@@ -27,8 +41,8 @@ function isSessionUsers(string $action = null, array $params = [])
 
     case 'DELETE_PARAMS':
       foreach ($params as $key => $val) :
-        if (isset($_SESSION[$key])) :
-          unset($_SESSION[$key]);
+        if (isset($_SESSION[$val])) :
+          unset($_SESSION[$val]);
         endif;
       endforeach;
       break;
@@ -169,9 +183,14 @@ function regExMatch(string $keyInput, string $valuesInput)
 
 if (isset($_POST['action']) && $_POST['action'] === 'initProject') : // Si on est sur la page acceuil
 
-  $connectPDO = connectPdo(); // CONNECT PDO
-  echo json_encode('');       // Si une erreur est relevé
-  exit();                     // EXIT
+  $connectPDO = connectPdo();  // CONNECT PDO
+  $getUsers = isSessionUsers('GET_PARAMS', [
+    'nom',
+    'prenom',
+    'email',
+  ]);
+  echo json_encode($getUsers); // RESPONSE JSON
+  exit();                      // EXIT
 
 elseif (isset($_POST['action']) && $_POST['action'] === 'connectUser') : // Si on connect un utilisateur
 
@@ -230,6 +249,18 @@ elseif (isset($_POST['action']) && $_POST['action'] === 'connectUser') : // Si o
       exit();                                    // EXIT
     }
   endif;
+
+elseif (isset($_POST['action']) && $_POST['action'] === 'disconnectUser') : // Si l'utilisateur se déconnect
+
+  isSessionUsers('DELETE_PARAMS', [
+    'nom',
+    'prenom',
+    'email',
+  ]);
+
+  echo json_encode(true);       // RESPONSE CACTH ERREUR
+  exit();                       // EXIT
+
 elseif (isset($_POST['action']) && $_POST['action'] === 'addUser') : // SI on ajoute un utilisateur
 
   $arrayPostParams = [
