@@ -71,13 +71,13 @@
     </form>
   </section>
 
-  <footer class="flex justify-center items-center bg-blue-800 rounded-md p-8 m-2">
-    <ul class="list-none">
-      <li><a href="./index.php" title="Accueil">Accueil</a></li>
-      <li><a href="./index.php" title="Accueil">Connexion</a></li>
-      <li><a href="./index.php" title="Accueil">Inscriptio</a></li>
-      <li><a href="./index.php" title="Accueil">Recherche</a></li>
-    </ul>
+  <footer class="flex justify-center items-center bg-slate-800 rounded-md p-8 m-2">
+    <div class="w-full flex flex-col text-base md:flex-row md:justify-around lg:text-2xl font-medium text-blue-300">
+      <a href="./index.php" title="Accueil">Accueil</a>
+      <a href="./index.php" title="Accueil">Connexion</a>
+      <a href="./index.php" title="Accueil">Inscription</a>
+      <a href="./index.php" title="Accueil">Recherche</a>
+    </div>
   </footer>
 </body>
 
