@@ -344,6 +344,8 @@ if (document.getElementById("title")) {
           route: "jsPhp.php",
           idForm: "form-connexion",
         });
+
+        console.log(res);
       }
   );
 } else if (document.getElementById("title-signUp")) {
