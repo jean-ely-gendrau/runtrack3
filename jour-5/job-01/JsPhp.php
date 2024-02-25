@@ -1,7 +1,40 @@
 <?php
+isSessionUsers(); // START SESSION
 header('Content-Type: application/json; charset=utf-8'); // HEADER JSON
 
 /*************************************** FONCTION PHP ***************************************/
+// Fonction qui gére les actions de SESSION
+function isSessionUsers(string $action = null, array $params = [])
+{
+  if (session_status() === PHP_SESSION_NONE) {
+    session_start(); // START SESSION
+  }
+
+  switch ($action) {
+    case 'SET_PARAMS':
+      foreach ($params as $key => $val) :
+        $_SESSION[$key] = $val;
+      endforeach;
+      break;
+
+    case 'UPDATE_PARAMS':
+      foreach ($params as $key => $val) :
+        if (isset($_SESSION[$key])) :
+          $_SESSION[$key] = $val;
+        endif;
+      endforeach;
+      break;
+
+    case 'DELETE_PARAMS':
+      foreach ($params as $key => $val) :
+        if (isset($_SESSION[$key])) :
+          unset($_SESSION[$key]);
+        endif;
+      endforeach;
+      break;
+  }
+}
+
 // Fonction de Connection PDO
 function connectPdo()
 {
@@ -41,13 +74,15 @@ function hashPassword(string $password)
 // Fonction de securiter Verification de Hash de password avec SODIUM
 function verifyPasswordHash(string $hash, string $password): bool
 {
-  if ('' === $password || \strlen($password) < 10) :
-    return false;
+  if ('' === $password || strlen($password) < 6) :
+    return false; // FALSE
   endif;
 
   if (sodium_crypto_pwhash_str_verify($hash,  $password)) :
-    return true;
+    return true; // PASSWORD HASH OK
   endif;
+
+  return false; // RETURN FALSE DEFAULT
 }
 
 // Fonction pour ajouter un utilisateur en BDD
@@ -155,17 +190,45 @@ elseif (isset($_POST['action']) && $_POST['action'] === 'connectUser') : // Si o
 
   else : // Sinon tout c'est bien passée on traite la connection utilisateur
 
-    $connectPDO = connectPdo();                // CONNECT PDO
-    $sqlConnect = "SELECT * FROM 
-                    utilisateur 
-                    WHERE email = :email 
-                    AND password = :password"; // SQL STRING
+    try {
+      $passwordBuffer = $paramsSqlConnect['password'];
+      unset($paramsSqlConnect['password']);
+      $connectPDO = connectPdo();                // CONNECT PDO
+      $sqlConnect = "SELECT * FROM 
+                    utilisateurs 
+                    WHERE email = :email";       // SQL STRING
 
-    $req = $connectPDO->prepare($sqlConnect);  // PREPARE PDO
-    $req->execute($paramsSqlConnect);          // EXECUTE PDO
-    $result = $req->fetch(PDO::FETCH_ASSOC);   // FETCH
-    echo json_encode($result);                 // RESPONSE JSON
-    exit();                                    // EXIT
+      $req = $connectPDO->prepare($sqlConnect);  // PREPARE PDO
+      $req->execute($paramsSqlConnect);          // EXECUTE PDO
+      $result = $req->fetch(PDO::FETCH_ASSOC);   // FETCH
+
+      // Si on à un résultat et que le hash du password correspond  
+      if (
+        $result
+        && verifyPasswordHash($result['password'], $passwordBuffer)
+      ) :
+        unset($result['password']);
+
+        isSessionUsers('SET_PARAMS', [
+          'nom'    => $result['nom'],
+          'prenom' => $result['prenom'],
+          'email'  => $result['email'],
+        ]);
+
+        echo json_encode(true);               // RESPONSE JSON
+        exit();                                  // EXIT
+
+      // Sinon Le mots de pass ne correspond pas
+      else :
+
+        echo json_encode(false);                 // RESPONSE JSON
+        exit();                                  // EXIT
+
+      endif;
+    } catch (Exception $error) {
+      echo json_encode($error->getMessage());    // RESPONSE CACTH ERREUR
+      exit();                                    // EXIT
+    }
   endif;
 elseif (isset($_POST['action']) && $_POST['action'] === 'addUser') : // SI on ajoute un utilisateur
 
@@ -185,7 +248,7 @@ elseif (isset($_POST['action']) && $_POST['action'] === 'addUser') : // SI on aj
     echo json_encode($controlArrayParams);    // RESPONSE JSON
     exit();                                   // EXIT
 
-  else : // Sinon tout c'est bien passé
+  else : // Sinon tout c'est bien passé 
 
     unset($arrayPostParams['passwordCompare']);                                // Retire le passwordCompare tu tableau de paramètres
     $arrayPostParams['password'] = hashPassword($arrayPostParams['password']); // Hashage du mot de pass SODIUM

@@ -12,10 +12,10 @@
   <article>
     <h1 id="title-SignIn" class="mb-1">Connexion au module PHP-JS</h1>
 
-    <form class="mb-1" id="form-connexion">
+    <form class="mb-1" id="form-connexion" method="post">
       <input class="mb-1 p-2 rounded" type="email" id="email" name="email" placeholder="votre email" />
       <input class="mb-1 p-2 rounded" type="password" id="password" name="password" placeholder="votre mots de passe" />
-      <button id="addUser" class="btn btn-success">Connection</button>
+      <button id="addUser" type="submit" class="btn btn-success">Connection</button>
     </form>
   </article>
   <!-- ADD SCRIPT -->

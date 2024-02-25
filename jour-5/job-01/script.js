@@ -325,7 +325,20 @@ async function submitForm(e) {
   }
 }
 
-// CONDITION DE COTROLE DE NAVIGUATION
+/***************************** PAGE CONNEXION **************************/
+async function submitConnectForm(e) {
+  e.preventDefault();
+
+  const res = await postJs({
+    bodyParam: { action: "connectUser" },
+    route: "jsPhp.php",
+    idForm: "form-connexion",
+  });
+
+  console.log(res);
+}
+
+/***************************** CONDITION DE COTROLE DE NAVIGUATION **************************/
 // initialise la fonction si le document à était chargée complétement
 // Si l'adresse de la page est index.php ou /
 if (document.getElementById("title")) {
@@ -333,21 +346,9 @@ if (document.getElementById("title")) {
   initProject();
 } else if (document.getElementById("title-SignIn")) {
   console.log("title-SignIn");
-  document.getElementById("form-connexion")?.addEventListener(
-    "submit",
-    (e) =>
-      async function (e) {
-        e.preventDefault();
-
-        const res = await postJs({
-          bodyParam: { action: "connectUser" },
-          route: "jsPhp.php",
-          idForm: "form-connexion",
-        });
-
-        console.log(res);
-      }
-  );
+  document
+    .getElementById("form-connexion")
+    ?.addEventListener("submit", submitConnectForm);
 } else if (document.getElementById("title-signUp")) {
   //addEventListener("focusout", (event) => {});
   console.log("title-signUp");
