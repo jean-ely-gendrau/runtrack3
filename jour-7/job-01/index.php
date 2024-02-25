@@ -26,44 +26,44 @@
       <fieldset>
         <caption>Chossir son genre</caption>
       </fieldset>
-      <labe for="homme">Masculin</labe>
+      <label for="homme">Masculin</label>
       <input type="radio" id="homme" name="genre" value="homme">
-      <labe for="femme">Féminin</labe>
+      <label for="femme">Féminin</label>
       <input type="radio" id="femme" name="genre" value="femme">
-      <labe for="nongr">Non-Genré</labe>
+      <label for="nongr">Non-Genré</label>
       <input type="radio" id="nongr" name="genre" value="nongr">
 
-      <labe for="nom">Nom</labe>
+      <label for="nom">Nom</label>
       <input type="text" id="nom" name="nom" placeholder="Votre Nom">
 
-      <labe for="prenom">Prénom</labe>
+      <label for="prenom">Prénom</label>
       <input type="text" id="prenom" name="prenom" placeholder="Votre prénom">
 
-      <labe for="adress">Adresse</labe>
+      <label for="adress">Adresse</label>
       <input type="text" id="adress" name="adress" placeholder="Votre adresse">
 
-      <labe for="email">Email</labe>
+      <label for="email">Email</label>
       <input type="email" id="email" name="email" placeholder="Votre email">
 
-      <labe for="password">Mot de pass</labe>
+      <label for="password">Mot de pass</label>
       <input type="password" id="password" name="password" placeholder="Votre mot de pass">
 
-      <labe for="passwordComfirm">Confirmer le mot de pass</labe>
+      <label for="passwordComfirm">Confirmer le mot de pass</label>
       <input type="password" id="passwordComfirm" name="passwordComfirm" placeholder="Confirmer le mot de pass">
 
       <fieldset>
         <caption>Choissez vos passions</caption>
 
-        <labe for="computer"></labe>
+        <label for="computer">Informatique</label>
         <input type="checkbox" id="computer" name="computer" value="informatique">
 
-        <labe for="travel"></labe>
+        <label for="travel">Voyage</label>
         <input type="checkbox" id="travel" name="travel" value="voyages">
 
-        <labe for="sport"></labe>
+        <label for="sport">Sport</label>
         <input type="checkbox" id="sport" name="sport" value="sport">
 
-        <labe for="reading"></labe>
+        <label for="reading">Lecture</label>
         <input type="checkbox" id="reading" name="reading" value="lecture">
       </fieldset>
 
