@@ -335,7 +335,13 @@ async function submitConnectForm(e) {
     idForm: "form-connexion",
   });
 
-  console.log(res);
+  // Si la reponse est true
+  if (res) {
+    window.location.replace(`https://${window.location.href}/jour-5/job-01/`);
+  } else {
+    // Sinon on gére l'erreur de connection ici
+    console.error("Ooops login inncorrect");
+  }
 }
 
 /***************************** CONDITION DE COTROLE DE NAVIGUATION **************************/
