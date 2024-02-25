@@ -9,11 +9,11 @@
 </head>
 
 <body>
-  <header class="flex justify-center items-center bg-blue-800 rounded-md p-8">
-    <nav>
+  <header class="flex justify-center items-center bg-blue-800 rounded-md p-8 m-2">
+    <nav class="w-full flex flex-col md:flex-row md:justify-around lg:text-2xl font-medium text-slate-300">
       <a href="./index.php" title="Accueil">Accueil</a>
       <a href="./index.php" title="Accueil">Connexion</a>
-      <a href="./index.php" title="Accueil">Inscriptio</a>
+      <a href="./index.php" title="Accueil">Inscription</a>
       <a href="./index.php" title="Accueil">Recherche</a>
     </nav>
   </header>
