@@ -23,13 +23,53 @@ function connectPdo()
     else :
 
       echo json_encode('Erreur : ' . $error->getMessage()); // Si une erreur est relevé
-      exit(); // Arrête le script pour éviter les erreur lié au résultat JSON
+      exit(); // EXIT
     endif;
   }
 }
 
+function hashPassword(string $password)
+{
+
+  return sodium_crypto_pwhash_str(
+    $password,
+    SODIUM_CRYPTO_PWHASH_OPSLIMIT_INTERACTIVE,
+    SODIUM_CRYPTO_PWHASH_MEMLIMIT_INTERACTIVE
+  );
+}
+
+function verifyPasswordHash(string $hash, string $password): bool
+{
+  if ('' === $password || \strlen($password) < 10) :
+    return false;
+  endif;
+
+  if (sodium_crypto_pwhash_str_verify($hash,  $password)) :
+    return true;
+  endif;
+}
+
+function addUser(array $paramsSqlUser)
+{
+  $dbConnect = connectPdo(); // Connection PDO
+
+  $sqlInsert = "INSERT INTO utilisateurs (nom, prenom, email, password) VALUES (:nom, :prenom, :email, :password)"; // SQL INSERT
+
+  // Si sqlInsert
+  if ($sqlInsert) {
+    try {
+      $req = $dbConnect->prepare($sqlInsert); // Prepare
+      $req->execute($paramsSqlUser); // Execute la requête
+    } catch (Exception $error) {
+      echo json_encode('Erreur : ' . $error->getMessage()); // Si une erreur est relevé
+      exit(); // Arrête le script pour éviter les erreur lié au résultat JSON
+    }
+  }
+}
 function regExMatch(string $keyInput, string $valuesInput)
 {
+
+  $valuesInput = htmlspecialchars(trim($valuesInput));
 
   switch ($keyInput):
     case 'nom':
@@ -74,7 +114,7 @@ function regExMatch(string $keyInput, string $valuesInput)
 
     case 'passwordCompare':
 
-      if (isset($_POST['keyInputPwd']) && isset($_POST['valInputPwd']) && $_POST['valInputPwd'] === $valuesInput && preg_match('/^(?(?=.*[A-Z])(?=.*[0-9])(?=.*[\%\$\,\;\!\-_])[a-zA-Z0-9\%\$\,\;\!\-_]{6,25})$/', $valuesInput)) :
+      if (isset($_POST['password']) && $_POST['password'] === $valuesInput && preg_match('/^(?(?=.*[A-Z])(?=.*[0-9])(?=.*[\%\$\,\;\!\-_])[a-zA-Z0-9\%\$\,\;\!\-_]{6,25})$/', $valuesInput)) :
 
         return true; // Si le masque est bon true
 
@@ -93,18 +133,30 @@ function regExMatch(string $keyInput, string $valuesInput)
 if (isset($_POST['action']) && $_POST['action'] === 'initProject') :
   $connectPDO = connectPdo();
   echo json_encode(''); // Si une erreur est relevé
-  exit(); // Arrête le script pour éviter les erreur lié au résultat JSON
+  exit(); // EXIT
 elseif (isset($_POST['action']) && $_POST['action'] === 'userConnect') :
 
 elseif (isset($_POST['action']) && $_POST['action'] === 'addUser') :
-  foreach ($_POST as $key => $value) :
-    if (regExMatch($key, $value)) :
+  $arrayPostParams = [
+    'nom'             => $_POST['nom']             ?? "",
+    'prenom'          => $_POST['prenom']          ?? "",
+    'email'           => $_POST['email']           ?? "",
+    'password'        => $_POST['password']        ?? "",
+    'passwordCompare' => $_POST['passwordCompare'] ?? "",
+  ];
 
-    endif;
-  endforeach;
-  echo json_encode($_POST); // Si le masque est bon true
-  exit(); // Arrête le script pour éviter les erreur lié au résultat JSON
-
+  $controlArrayParams = array_map('regExMatch', array_keys($arrayPostParams), array_values($arrayPostParams));
+  if (!in_array(true, $controlArrayParams)) :
+    // Si une erreur survient dans la validations des inputs
+    echo json_encode($controlArrayParams);
+    exit();
+  else :
+    unset($arrayPostParams['passwordCompare']);
+    $arrayPostParams['password'] = hashPassword($arrayPostParams['password']);
+    addUser($arrayPostParams);
+    echo json_encode(true); // Si tout c'est bien passé
+    exit(); // EXIT
+  endif;
 // Vérification des inputs
 // nom doit contenir minimum 3 caracthère et 25 au maximum
 // prénom doit contenir minimum 3 caracthère et 25 au maximum
@@ -117,12 +169,12 @@ elseif (isset($_POST['action']) && $_POST['action'] === 'regEx') :
 
     $response = regExMatch($_POST['nameInput'], $_POST['valInput']);
     echo json_encode($response); // la reponse à javascript
-    exit(); // Arrête le script pour éviter les erreur lié au résultat JSON
+    exit(); // EXIT
   endif;
 
   echo json_encode($_POST); // Si une erreur est relevé
-  exit(); // Arrête le script pour éviter les erreur lié au résultat JSON
+  exit(); // EXIT
 else :
   echo json_encode('Ooops une erreur viens de ce produire'); // Si une erreur est relevé
-  exit(); // Arrête le script pour éviter les erreur lié au résultat JSON
+  exit(); // EXIT
 endif;

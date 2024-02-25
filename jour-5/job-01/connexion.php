@@ -10,7 +10,7 @@
 
 <body class="d-flex flex-column">
   <article>
-    <h1 id="title" class="mb-1">Connexion au module PHP-JS</h1>
+    <h1 id="title-SignIn" class="mb-1">Connexion au module PHP-JS</h1>
 
     <form class="mb-1" id="form-connexion">
       <input class="mb-1 p-2 rounded" type="email" id="email" name="email" placeholder="votre email" />

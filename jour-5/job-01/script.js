@@ -26,7 +26,7 @@ async function postJs({ route, bodyParam, idForm }) {
     }
     console.log(bodyFormFormat + "&" + bodyParamFormat);
     const res = await fetch(
-      `http://${window.location.hostname}/jour-5/job-01/${route}`,
+      `https://${window.location.hostname}/jour-5/job-01/${route}`,
       {
         method: "POST",
         headers: {
@@ -41,7 +41,7 @@ async function postJs({ route, bodyParam, idForm }) {
     // La base de donnée n'as pas était créer, nous alons la créer avec un script PHP
     if (response === "error no bdd") {
       window.location.replace(
-        `http://${window.location.hostname}/jour-5/job-01/install.php`
+        `https://${window.location.hostname}/jour-5/job-01/install.php`
       );
     } else {
       return response; // Aucune erreur retour de la response
@@ -59,17 +59,20 @@ function validateInput(keyInput, valuesInput) {
       if (/^(\w{3,25})$/.test(valuesInput)) {
         return true; // Si le masque est bon true
       }
-      return (
-        "Votre " +
-        (keyInput === "nom" ? "nom" : "prénom") +
-        " n'est pas conforme"
-      ); // si la condition n'a pas été remplie alors on retourne un message d'erreur
+      return {
+        [keyInput]:
+          "Votre " +
+          (keyInput === "nom" ? "nom" : "prénom") +
+          " n'est pas conforme",
+      }; // si la condition n'a pas été remplie alors on retourne un message d'erreur
 
     case "email":
       if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(valuesInput)) {
         return true; // Si le masque est bon true
       }
-      return "Votre adresse email n'a pas un format valide."; // si la condition n'a pas été remplie alors on retourne un message d'erreur
+      return {
+        [keyInput]: "Votre adresse email n'a pas un format valide.",
+      }; // si la condition n'a pas été remplie alors on retourne un message d'erreur
 
     case "password":
       if (
@@ -79,7 +82,10 @@ function validateInput(keyInput, valuesInput) {
       ) {
         return true; // Si le masque est bon true
       }
-      return "Votre mot de passe doit être conforme au modèle exemple : A12xHs5a!25"; // si la condition n'a pas été remplie alors on retourne un message d'erreur
+      return {
+        [keyInput]:
+          "Votre mot de passe doit être conforme au modèle exemple : A12xHs5a!25",
+      }; // si la condition n'a pas été remplie alors on retourne un message d'erreur
 
     case "passwordCompare":
       const valInputPwd = document.getElementById("password").value;
@@ -92,7 +98,7 @@ function validateInput(keyInput, valuesInput) {
       ) {
         return true; // Si le masque est bon true
       }
-      return "Les deux mots de passe ne sont pas identiques"; // si la condition n'a pas été remplie alors on retourne un message d'erreur
+      return { [keyInput]: "Les deux mots de passe ne sont pas identiques" }; // si la condition n'a pas été remplie alors on retourne un message d'erreur
 
     default:
       return false; // Si aucune clé input n'a été trouvée.
@@ -105,7 +111,7 @@ function addEventButton(buttonSignIn, buttonSignUp) {
   const connectPage = (e) => {
     e.preventDefault();
     window.location.replace(
-      `http://${window.location.hostname}/jour-5/job-01/connexion.php`
+      `https://${window.location.hostname}/jour-5/job-01/connexion.php`
     );
   };
   // addUser , ajoute des utilisateurs aléatoir celon le script pho appelé avec la function postJs
@@ -113,7 +119,7 @@ function addEventButton(buttonSignIn, buttonSignUp) {
     e.preventDefault();
     //API Fetch post
     window.location.replace(
-      `http://${window.location.hostname}/jour-5/job-01/inscription.php`
+      `https://${window.location.hostname}/jour-5/job-01/inscription.php`
     );
   };
 
@@ -121,6 +127,32 @@ function addEventButton(buttonSignIn, buttonSignUp) {
   buttonSignUp.addEventListener("click", (e) => addUser(e)); // Ecouteur événement click -> window.location.rerplace -> inscription
 }
 
+function addAndCleanErrorHtmlMessage(key, objectMessage) {
+  // On définit un id message-warn-{Nom de la balise en cour de focus out}
+  let idWarn = `message-warn-${key}`;
+  const elementWarn = document.getElementById(idWarn); // Sélection de la balise
+  const elementError = document.getElementById(key); // Séléction de l'élément ou il y à une erreur
+  //DEBUG console.log(res);
+
+  // Si le résultat de la requête retourn false
+  if (objectMessage !== true) {
+    // On vérifie si la balise n'est pas dans le DOM
+    if (elementWarn === null) {
+      // On créer une balise paragraphe
+      let elementText = document.createElement("p");
+      elementText.setAttribute("id", idWarn); // On définit l'id
+      elementText.setAttribute("class", "text-danger"); // On définit une classe text-danger
+      elementText.textContent = objectMessage[key]; // On définit le text du paragraphe avec le message renvoyé par PHP
+      elementError.after(elementText); // On ajoute l'élément après l'élément qui initialise l'événement
+    }
+  } else {
+    //Sinon tout c'est bien passé
+    // Si elementWarn existe dans le DOM
+    if (elementWarn) {
+      elementWarn.remove(); // On le retire.
+    }
+  }
+}
 /******************************************************* PAGE HOME *******************************/
 // Fonction initProject
 async function initProject() {
@@ -129,7 +161,7 @@ async function initProject() {
     route: "jsPhp.php",
     idForm: "form-inscription",
   });
-
+  console.log(res);
   const divGroup = document.createElement("div"); // HTML DIV
   divGroup.setAttribute("class", "btn-group m-auto");
   divGroup.setAttribute("role", "group");
@@ -181,31 +213,7 @@ async function initProject() {
   }
 }
 
-// initialise la fonction si le document à était chargée complétement
-// Si l'adresse de la page est index.php ou /
-if (
-  (document.readyState === "complete" &&
-    window.location.href ===
-      `http://${window.location.hostname}/jour-5/job-01/index.php`) ||
-  window.location.href === `http://${window.location.hostname}/jour-5/job-01/`
-) {
-  initProject();
-}
-document.getElementById("form-connexion")?.addEventListener(
-  "submit",
-  (e) =>
-    async function (e) {
-      e.preventDefault();
-
-      const res = await postJs({
-        bodyParam: { action: "connectUser" },
-        route: "jsPhp.php",
-        idForm: "form-connexion",
-      });
-    }
-);
-
-/***************************** INSCRIPTION **************************/
+/***************************** PAGE INSCRIPTION **************************/
 const loadForm = () => {
   const elementForm = document.querySelector("form"); // Séléctionne la 1er balise form dans le DOM
 
@@ -262,53 +270,85 @@ const loadForm = () => {
 
           Fin de commentaire RegEx PHP */
 
-          // RegEx avec Javascript
+          // RegEx avec Javascript // Commenté le code suivant dans le cas ou la vérification ce ferai avec PHP
           const res = validateInput(event.target.name, event.target.value);
-          // On définit un id message-warn-{Nom de la balise en cour de focus out}
-          let idWarn = `message-warn-${event.target.name}`;
-          const elementWarn = document.getElementById(idWarn); // Sélection de la balise
-
-          //DEBUG console.log(res);
-
-          // Si le résultat de la requête retourn false
-          if (res !== true) {
-            // On vérifie si la balise n'est pas dans le DOM
-            if (elementWarn === null) {
-              // On créer une balise paragraphe
-              let elementText = document.createElement("p");
-              elementText.setAttribute("id", idWarn); // On définit l'id
-              elementText.setAttribute("class", "text-danger"); // On définit une classe text-danger
-              elementText.textContent = res; // On définit le text du paragraphe avec le message renvoyé par PHP
-              event.target.after(elementText); // On ajoute l'élément après l'élément qui initialise l'événement
-            }
-          } else {
-            //Sinon tout c'est bien passé
-            // Si elementWarn existe dans le DOM
-            if (elementWarn) {
-              elementWarn.remove(); // On le retire.
-            }
-          }
+          addAndCleanErrorHtmlMessage(event.target.name, res);
         }
       );
     }
   }
 };
 
-async function submitForm(e) {
-  e.preventDefault();
-  console.log(e);
-  const res = await postJs({
-    bodyParam: { action: "addUser" },
-    route: "jsPhp.php",
-    idForm: "form-inscription",
+// IsStringToArray
+// Vérifier chaque élément du tableau avec every
+// Si un valeur est de type object
+// return false sinon return true pour continuer
+Array.prototype.IsStringToArray = function () {
+  const result = this.every((element) => {
+    if (typeof element === "object") return false;
+
+    return true;
   });
 
-  console.log(res);
+  return result === false ? false : true;
+};
+
+async function submitForm(e) {
+  e.preventDefault();
+
+  console.log(e);
+  const form = new FormData(this);
+  //Reprendre ici
+  const regEx = Array.from(form).map(([key, val], index) => {
+    const res = validateInput(key, val);
+    if (res !== true) addAndCleanErrorHtmlMessage(key, res);
+    return res;
+  });
+
+  if (regEx.IsStringToArray() === false) {
+    console.error("erreur");
+  } else {
+    console.log("ok");
+    const res = await postJs({
+      bodyParam: { action: "addUser" },
+      route: "jsPhp.php",
+      idForm: "form-inscription",
+    });
+    // Si le membre est ajouté avec succées php return true
+    if (res) {
+      this.reset(); // reset le formulaire
+      // Redirection vers la connection
+      window.location.replace(
+        `https://${window.location.hostname}/jour-5/job-01/connexion.php`
+      );
+    }
+  }
 }
 
-if (document.getElementById("title-signUp")) {
+// CONDITION DE COTROLE DE NAVIGUATION
+// initialise la fonction si le document à était chargée complétement
+// Si l'adresse de la page est index.php ou /
+if (document.getElementById("title")) {
+  console.log("title");
+  initProject();
+} else if (document.getElementById("title-SignIn")) {
+  console.log("title-SignIn");
+  document.getElementById("form-connexion")?.addEventListener(
+    "submit",
+    (e) =>
+      async function (e) {
+        e.preventDefault();
+
+        const res = await postJs({
+          bodyParam: { action: "connectUser" },
+          route: "jsPhp.php",
+          idForm: "form-connexion",
+        });
+      }
+  );
+} else if (document.getElementById("title-signUp")) {
   //addEventListener("focusout", (event) => {});
-  console.log("ok");
+  console.log("title-signUp");
   const elementForm = document.getElementById("form-inscription");
   elementForm.addEventListener("submit", submitForm);
   loadForm();
