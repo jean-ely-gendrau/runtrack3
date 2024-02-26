@@ -1,3 +1,25 @@
+<?php
+
+ini_set("highlight.comment", "#008000");
+ini_set("highlight.default", "#000000");
+ini_set("highlight.html", "#808080");
+ini_set("highlight.keyword", "#0000BB; font-weight: bold");
+ini_set("highlight.string", "#DD0000");
+
+$escapeFile = ['.', '..'];
+$listForm = scandir(__DIR__ . DIRECTORY_SEPARATOR . "formTailwind");
+
+$diffArray = array_diff($listForm, $escapeFile);
+unset($escapeFile, $listForm);
+
+$listOption = join('', array_map(
+  function ($fileItem) {
+    $fileItem = basename($fileItem, '.php');
+    return "<option value='{$fileItem}'>{$fileItem}</option>";
+  },
+  $diffArray
+));
+?>
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -8,7 +30,7 @@
   <title>Jour-7 Tailwind CSS - Job-04</title>
 </head>
 
-<body>
+<body class="flex flex-col gap-y-2 h-screen place-content-between">
   <header class="flex justify-center items-center bg-blue-800 rounded-md p-8 m-2">
     <nav class="w-full flex flex-col md:flex-row md:justify-around lg:text-2xl font-medium text-slate-300">
       <a href="./index.php" title="Accueil">Accueil</a>
@@ -18,57 +40,16 @@
     </nav>
   </header>
 
-  <section>
-    <h1 class="text-3xl font-bold underline">
+  <section id="containt-form" class="flex flex-col gap-y-2">
+    <h1 class="text-3xl font-bold underline text-center text-blue-950">
       Formulaire avec TailWind !
     </h1>
-    <form method="post">
-      <fieldset>
-        <caption>Chossir son genre</caption>
-      </fieldset>
-      <label for="homme">Masculin</label>
-      <input type="radio" id="homme" name="genre" value="homme">
-      <label for="femme">Féminin</label>
-      <input type="radio" id="femme" name="genre" value="femme">
-      <label for="nongr">Non-Genré</label>
-      <input type="radio" id="nongr" name="genre" value="nongr">
 
-      <label for="nom">Nom</label>
-      <input type="text" id="nom" name="nom" placeholder="Votre Nom">
+    <select id="listForm" name="listForm" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/3 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 m-auto">
+      <option>Choisir un formulaire</option>
+      <?= $listOption; ?>
+    </select>
 
-      <label for="prenom">Prénom</label>
-      <input type="text" id="prenom" name="prenom" placeholder="Votre prénom">
-
-      <label for="adress">Adresse</label>
-      <input type="text" id="adress" name="adress" placeholder="Votre adresse">
-
-      <label for="email">Email</label>
-      <input type="email" id="email" name="email" placeholder="Votre email">
-
-      <label for="password">Mot de pass</label>
-      <input type="password" id="password" name="password" placeholder="Votre mot de pass">
-
-      <label for="passwordComfirm">Confirmer le mot de pass</label>
-      <input type="password" id="passwordComfirm" name="passwordComfirm" placeholder="Confirmer le mot de pass">
-
-      <fieldset>
-        <caption>Choissez vos passions</caption>
-
-        <label for="computer">Informatique</label>
-        <input type="checkbox" id="computer" name="computer" value="informatique">
-
-        <label for="travel">Voyage</label>
-        <input type="checkbox" id="travel" name="travel" value="voyages">
-
-        <label for="sport">Sport</label>
-        <input type="checkbox" id="sport" name="sport" value="sport">
-
-        <label for="reading">Lecture</label>
-        <input type="checkbox" id="reading" name="reading" value="lecture">
-      </fieldset>
-
-      <button id="btn-validate" type="submit">Valider</button>
-    </form>
   </section>
 
   <footer class="flex justify-center items-center bg-slate-800 rounded-md p-8 m-2">
@@ -79,6 +60,9 @@
       <a href="./index.php" title="Accueil">Recherche</a>
     </div>
   </footer>
+
+  <!-- ADD SCRIPT -->
+  <script src="./script.js"></script>
 </body>
 
 </html>
