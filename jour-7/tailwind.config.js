@@ -5,6 +5,7 @@ module.exports = {
     "./job-02/**/*.{php,html,js}",
     "./job-03/**/*.{php,html,js}",
     "./job-04/**/*.{php,html,js}",
+    "./job-05/**/*.{php,html,js}",
   ],
   theme: {
     extend: {},
