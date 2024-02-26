@@ -30,15 +30,25 @@ const selectList = document.getElementById("listForm");
 
 const handelSelect = async (e) => {
   e.preventDefault();
-  console.log(e);
+  //DEBUG console.log(e);
   const res = await postJs({
     route: "JsPhp.php",
     bodyParam: { action: "selectForm", filename: e.target.value },
   });
-  console.log(res, e.target.value);
+  //DEBUG console.log(res, e.target.value);
+
   newDom = new DOMParser();
   afterNode = newDom.parseFromString(res, "text/html");
-  e.target.after(afterNode.body);
+
+  const sectionElement = document.createElement("section");
+  sectionElement.setAttribute("id", "formSelectJs");
+  sectionElement.append(afterNode.body);
+
+  const isFormSelectJs = document.getElementById("formSelectJs");
+
+  isFormSelectJs
+    ? isFormSelectJs.replaceWith(sectionElement)
+    : e.target.after(sectionElement);
 };
 
 if (selectList) {

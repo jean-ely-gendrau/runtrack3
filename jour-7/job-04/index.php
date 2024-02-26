@@ -6,7 +6,7 @@ ini_set("highlight.html", "#808080");
 ini_set("highlight.keyword", "#0000BB; font-weight: bold");
 ini_set("highlight.string", "#DD0000");
 
-$escapeFile = ['.', '..'];
+$escapeFile = ['.', '..', 'list-voie.php'];
 $listForm = scandir(__DIR__ . DIRECTORY_SEPARATOR . "formTailwind");
 
 $diffArray = array_diff($listForm, $escapeFile);
